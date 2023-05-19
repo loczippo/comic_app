@@ -1,0 +1,5 @@
+export {default as HomeScreen} from './HomeScreen/HomeScreen'
+export {default as DetailsScreen} from './DetailsScreen/DetailsScreen'
+export {default as SettingScreen} from './SettingScreen/SettingScreen'
+export {default as SubScreen} from './SubScreen/SubScreen'
+export {default as SubScreen2} from './SubScreen2/SubScreen2'
