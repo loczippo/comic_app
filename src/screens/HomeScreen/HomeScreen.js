@@ -17,10 +17,21 @@ import Images from '../../assets/images';
 
 import MangaFlatList from './MangaFlatList';
 import styles from './styles';
+import NetInfo from "@react-native-community/netinfo";
 
 export default function HomeScreen({navigation}) {
   const [refreshing, setRefreshing] = React.useState(false);
   const [isLoading, setIsLoading] = React.useState(true);
+
+  const [isConnected, setIsConnected] = React.useState(false);
+
+  useEffect(() => {
+    NetInfo.addEventListener(state => {
+      setIsConnected(state.isConnected)
+    });
+  }, [isConnected]);
+
+
   const onRefresh = React.useCallback(() => {
     setRefreshing(true);
     setTimeout(() => {
@@ -28,13 +39,11 @@ export default function HomeScreen({navigation}) {
     }, 1000)
   }, []);
 
-
   let [data, setData] = useState([])
   let [data1, setData1] = useState([])
 
   useEffect(() => {
-    if(!refreshing) {
-      
+    if(!refreshing && isConnected) {
       MangaService.randomManga()
       .then((data) => {
         setData(data);
@@ -43,7 +52,7 @@ export default function HomeScreen({navigation}) {
           setRefreshing(false);
         }
       });
-      MangaService.randomManga()
+      MangaService.randomManga1()
       .then((data) => {
         setData1(data);
         if (refreshing) {
@@ -51,7 +60,7 @@ export default function HomeScreen({navigation}) {
         }
       });
     }
-  }, [refreshing]);
+  }, [refreshing, isConnected]);
 
 
   return (
@@ -142,7 +151,7 @@ export default function HomeScreen({navigation}) {
                   justifyContent: 'space-evenly',
                 },
               ]}>
-              <MangaFlatList data={data} isLoading={isLoading} />
+              <MangaFlatList navigation={navigation} data={data} isLoading={isLoading} isConnected={isConnected} />
             </View>
           </View>
         </View>
@@ -161,7 +170,7 @@ export default function HomeScreen({navigation}) {
                   justifyContent: 'space-evenly',
                 },
               ]}>
-              <MangaFlatList data={data1} isLoading={isLoading} />
+              <MangaFlatList navigation={navigation}  data={data1} isLoading={isLoading} isConnected={isConnected}  />
             </View>
           </View>
         </View>

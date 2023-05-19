@@ -1,11 +1,23 @@
 import * as React from 'react';
 import { StyleSheet, Text, TouchableOpacity, View } from 'react-native';
 import screenString from '../../constants/screens';
+import GlobalHeader from '../../components/Header/Header';
 
-export default function SubScreen({navigation}) {
+import styles1 from '../../components/Header/styles';
+
+export default function SubScreen({route, navigation}) {
+
+  const { name } = route.params;
+
   return (
     <View style={styles.container}>
-      <View
+      <GlobalHeader
+        navigation={navigation}
+        showLeftButton={true}
+        showRightButton={true}
+        children={<Text style={styles1.title_header}>{name}</Text>}
+      />
+      {/* <View
         style={{
           flexDirection: 'row',
           justifyContent: 'space-between',
@@ -23,15 +35,15 @@ export default function SubScreen({navigation}) {
               color: 'red',
             }}>SubScreen nè</Text>
         <Text />
-      </View>
+      </View> */}
       <View style={{flex: 1, alignItems: 'center', justifyContent: 'center'}}>
         <Text style={{fontSize: 26, fontWeight: 'bold', color: 'black'}}>
-          Đây là SUB SCREEN
+          Đây là TRANG INFO TRUYỆN
         </Text>
         <Text
             onPress={() => navigation.navigate(screenString.SUB+"2")}
             style={{fontSize: 26, fontWeight: 'bold', color: 'green'}}>
-            Vào trang SUB SCREEN 2
+            Vào trang ĐỌC TRUYỆN
           </Text>
       </View>
     </View>

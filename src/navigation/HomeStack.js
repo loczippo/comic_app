@@ -10,7 +10,9 @@ export default function HomeStack() {
       <Stack.Navigator screenOptions={{headerShown: false}} >
         <Stack.Screen name={screenString.HOME} component={HomeScreen} />
         <Stack.Screen name={screenString.SUB} component={SubScreen} />
-        <Stack.Screen name={screenString.SUB+'2'} component={SubScreen2} />
+        <Stack.Screen name={screenString.SUB+'2'} options={{
+          
+        }} component={SubScreen2} />
       </Stack.Navigator>
     );
   }

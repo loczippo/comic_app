@@ -1,173 +1,165 @@
-import React, {useRef, useEffect} from 'react';
-import {Animated, FlatList, Image, Text, View, NetInfo } from 'react-native';
+import React, { useRef, useEffect } from 'react';
+import { Animated, FlatList, Image, Text, View, TouchableOpacity } from 'react-native';
 import styles from './styles';
 import Images from '../../assets/images';
-// import NetInfo from '@react-native-community/netinfo'; // Thêm thư viện NetInfo
+import NetInfo from "@react-native-community/netinfo"; // Thêm thư viện NetInfo
+import screenString from '../../constants/screens';
 
 
 const PlaceholderComponent = () => {
-    const opacityAnimation = useRef(new Animated.Value(0)).current;
-
-   
-
-
-    const startPulseAnimation = () => {
-      Animated.sequence([
-        Animated.timing(opacityAnimation, {
-          toValue: 2,
-          duration: 200,
-          useNativeDriver: true,
-        }),
-        Animated.timing(opacityAnimation, {
-          toValue: 0,
-          duration: 900,
-          useNativeDriver: true,
-        }),
-      ]).start(() => {
-        startPulseAnimation();
-      });
-    };
-  
-    useEffect(() => {
+  const opacityAnimation = useRef(new Animated.Value(0)).current;
+  const startPulseAnimation = () => {
+    Animated.sequence([
+      Animated.timing(opacityAnimation, {
+        toValue: 2,
+        duration: 200,
+        useNativeDriver: true,
+      }),
+      Animated.timing(opacityAnimation, {
+        toValue: 0,
+        duration: 900,
+        useNativeDriver: true,
+      }),
+    ]).start(() => {
       startPulseAnimation();
-    }, []);
+    });
+  };
 
-    
+  useEffect(() => {
+    startPulseAnimation();
+  }, []);
+  return (
+    <>
+      <View style={styles.containerTruyen}>
+        {/* thumbnai */}
 
-
-
-    return (
-        <>
-        <View style={styles.containerTruyen}>
-          {/* thumbnai */}
-
-          <View style={styles.mangaContainer}>
-            <Image
-              source={Images.loading}
-              style={[styles.manga_thumbnai, { height: 280, width: 175}]}
-            />
-            <View style={styles.mangaViewsContainer}>
-              <Text
-                style={[
-                  styles.eyeIcon,
-                  {marginLeft: 10, marginRight: 5, fontSize: 20},
-                ]}>
-                👀
-              </Text>
-              <Text style={[styles.manga_views, {marginTop: 4}]}>
-                {"1000"}
-              </Text>
-            </View>
+        <View style={styles.mangaContainer}>
+          <Image
+            source={Images.loading}
+            style={[styles.manga_thumbnai, { height: 280, width: 175 }]}
+          />
+          <View style={styles.mangaViewsContainer}>
+            <Text
+              style={[
+                styles.eyeIcon,
+                { marginLeft: 10, marginRight: 5, fontSize: 20 },
+              ]}>
+              👀
+            </Text>
+            <Text style={[styles.manga_views, { marginTop: 4 }]}>
+              {"1000"}
+            </Text>
           </View>
+        </View>
 
-          <View style={styles.mangaTimeLineContainer}>
+        <View style={styles.mangaTimeLineContainer}>
+          <Text
+            style={{
+              fontSize: 13,
+              fontWeight: 400,
+              color: '#fff',
+              backgroundColor: '#56ccf2',
+              borderRadius: 5,
+              padding: 1,
+              paddingLeft: 3,
+              paddingRight: 3,
+            }}>
+            {"10 giờ trước"}
+          </Text>
+          <Animated.View style={{ opacity: opacityAnimation }}>
             <Text
               style={{
                 fontSize: 13,
                 fontWeight: 400,
                 color: '#fff',
-                backgroundColor: '#56ccf2',
+                backgroundColor: '#ff2853',
+                marginLeft: 2,
                 borderRadius: 5,
                 padding: 1,
                 paddingLeft: 3,
                 paddingRight: 3,
               }}>
-              {"10 giờ trước"}
+              HOT
             </Text>
-            <Animated.View style={{opacity: opacityAnimation}}>
-              <Text
-                style={{
-                  fontSize: 13,
-                  fontWeight: 400,
-                  color: '#fff',
-                  backgroundColor: '#ff2853',
-                  marginLeft: 2,
-                  borderRadius: 5,
-                  padding: 1,
-                  paddingLeft: 3,
-                  paddingRight: 3,
-                }}>
-                HOT
-              </Text>
-            </Animated.View>
-          </View>
-
-          {/* name */}
-          <Text
-            style={styles.manga_name}
-            numberOfLines={1}
-            ellipsizeMode="tail">
-            {"Test"}
-          </Text>
+          </Animated.View>
         </View>
-        
-        <View style={styles.containerTruyen}>
-          {/* thumbnai */}
 
-          <View style={styles.mangaContainer}>
-            <Image
-              source={Images.loading}
-              style={[styles.manga_thumbnai, { height: 175, width: 175}]}
-            />
-            <View style={styles.mangaViewsContainer}>
-              <Text
-                style={[
-                  styles.eyeIcon,
-                  {marginLeft: 10, marginRight: 5, fontSize: 20},
-                ]}>
-                👀
-              </Text>
-              <Text style={[styles.manga_views, {marginTop: 4}]}>
-                {"1000"}
-              </Text>
-            </View>
+        {/* name */}
+        <Text
+          style={styles.manga_name}
+          numberOfLines={1}
+          ellipsizeMode="tail">
+          {"Đang tải..."}
+        </Text>
+      </View>
+
+      <View style={styles.containerTruyen}>
+        {/* thumbnai */}
+
+        <View style={styles.mangaContainer}>
+          <Image
+            source={Images.loading}
+            style={[styles.manga_thumbnai, { height: 175, width: 175 }]}
+          />
+          <View style={styles.mangaViewsContainer}>
+            <Text
+              style={[
+                styles.eyeIcon,
+                { marginLeft: 10, marginRight: 5, fontSize: 20 },
+              ]}>
+              👀
+            </Text>
+            <Text style={[styles.manga_views, { marginTop: 4 }]}>
+              {"1000"}
+            </Text>
           </View>
+        </View>
 
-          <View style={styles.mangaTimeLineContainer}>
+        <View style={styles.mangaTimeLineContainer}>
+          <Text
+            style={{
+              fontSize: 13,
+              fontWeight: 400,
+              color: '#fff',
+              backgroundColor: '#56ccf2',
+              borderRadius: 5,
+              padding: 1,
+              paddingLeft: 3,
+              paddingRight: 3,
+            }}>
+            {"10 giờ trước"}
+          </Text>
+          <Animated.View style={{ opacity: opacityAnimation }}>
             <Text
               style={{
                 fontSize: 13,
                 fontWeight: 400,
                 color: '#fff',
-                backgroundColor: '#56ccf2',
+                backgroundColor: '#ff2853',
+                marginLeft: 2,
                 borderRadius: 5,
                 padding: 1,
                 paddingLeft: 3,
                 paddingRight: 3,
               }}>
-              {"10 giờ trước"}
+              HOT
             </Text>
-            <Animated.View style={{opacity: opacityAnimation}}>
-              <Text
-                style={{
-                  fontSize: 13,
-                  fontWeight: 400,
-                  color: '#fff',
-                  backgroundColor: '#ff2853',
-                  marginLeft: 2,
-                  borderRadius: 5,
-                  padding: 1,
-                  paddingLeft: 3,
-                  paddingRight: 3,
-                }}>
-                HOT
-              </Text>
-            </Animated.View>
-          </View>
-
-          {/* name */}
-          <Text
-            style={styles.manga_name}
-            numberOfLines={1}
-            ellipsizeMode="tail">
-            {"Test"}
-          </Text>
+          </Animated.View>
         </View>
-        </>
-    )
+
+        {/* name */}
+        <Text
+          style={styles.manga_name}
+          numberOfLines={1}
+          ellipsizeMode="tail">
+          {"Đang tải..."}
+        </Text>
+      </View>
+    </>
+  )
 }
 
-export default MangaFlatList = ({data, isLoading}) => {
+export default MangaFlatList = ({ navigation, data, isLoading, isConnected }) => {
 
   const opacityAnimation = useRef(new Animated.Value(0)).current;
 
@@ -192,21 +184,11 @@ export default MangaFlatList = ({data, isLoading}) => {
     startPulseAnimation();
   }, []);
 
-  // const [isConnected, setIsConnected] = React.useState(true); // Thêm state isConnected
 
-  // useEffect(() => {
-  //   const unsubscribe = NetInfo.addEventListener(state => {
-  //     setIsConnected(state.isConnected);
-  //   });
 
-  //   return () => {
-  //     unsubscribe();
-  //   };
-  // }, []);
-  
-
-  const renderItem = ({item}) => {
+  const renderItem = ({ item }) => {
     return (
+      <TouchableOpacity activeOpacity={1} onPress={() => navigation.navigate(screenString.SUB, {name: item.name})}>
         <View style={styles.containerTruyen}>
           {/* thumbnai */}
 
@@ -221,11 +203,11 @@ export default MangaFlatList = ({data, isLoading}) => {
               <Text
                 style={[
                   styles.eyeIcon,
-                  {marginLeft: 10, marginRight: 5, fontSize: 20},
+                  { marginLeft: 10, marginRight: 5, fontSize: 20 },
                 ]}>
                 👀
               </Text>
-              <Text style={[styles.manga_views, {marginTop: 4}]}>
+              <Text style={[styles.manga_views, { marginTop: 4 }]}>
                 {item.viewcounts}
               </Text>
             </View>
@@ -245,7 +227,7 @@ export default MangaFlatList = ({data, isLoading}) => {
               }}>
               {item.ourTime}
             </Text>
-            <Animated.View style={{opacity: opacityAnimation}}>
+            <Animated.View style={{ opacity: opacityAnimation }}>
               <Text
                 style={{
                   fontSize: 13,
@@ -271,17 +253,18 @@ export default MangaFlatList = ({data, isLoading}) => {
             {item.name}
           </Text>
         </View>
-      );
+      </TouchableOpacity>
+    );
   }
 
-  // if (!isConnected) {
-  //   return <PlaceholderComponent />;
-  // }
+  if (!isConnected && isLoading) {
+    return <PlaceholderComponent />;
+  }
 
   if (isLoading) {
     return <PlaceholderComponent />;
   }
-  
+
 
   return (
     <FlatList

@@ -14,6 +14,7 @@ import {
 import colorString from './src/constants/colors';
 
 import MainContainer from './src/navigation/MainContainer';
+import { NetworkProvider } from 'react-native-offline';
 
 function App(): JSX.Element {
   return (
