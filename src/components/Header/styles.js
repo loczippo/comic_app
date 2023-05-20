@@ -21,7 +21,7 @@ export default ScaledSheet.create({
         width: '100%',
         height: Sizes.Sizes.s10,
         paddingHorizontal: Sizes.Sizes.s2,
-        backgroundColor: Colors.Colors.primary,
+        backgroundColor: Colors.HEADER,
         flexDirection: 'row',
         alignItems: 'center',
         // marginTop: Platform.OS === 'ios' ? '25@ms' : '35@ms',
@@ -40,13 +40,13 @@ export default ScaledSheet.create({
     },
 
     leftButton_Icon: {
-        color: Colors.Colors.info,
+        color: Colors.GRAY,
         fontSize: FontSizes.FontSizes.large,
     },
 
     rightButton_Icon: {
         top: '3@ms',
-        color: Colors.Colors.info,
+        color: Colors.GRAY,
         fontSize: FontSizes.FontSizes.large,
     },
 

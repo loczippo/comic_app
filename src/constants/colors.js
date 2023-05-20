@@ -75,4 +75,5 @@ export default {
     },
     BLUE_LIGHT: '#2980b9',
     GRAY: '#D3D3D3',
+    HEADER: '#A0AECD',
 }

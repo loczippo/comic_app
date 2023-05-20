@@ -16,5 +16,13 @@ class MangaService {
       return [];
     }
   };
+  infoManga = async(id) => {
+    try {
+      const data = (await axios.get(`https://cdn.apitruyen.tk/info/${id}`)).data;
+      return data;
+    } catch {
+      return [];
+    }
+  }
 };
 export default new MangaService();

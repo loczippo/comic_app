@@ -188,7 +188,7 @@ export default MangaFlatList = ({ navigation, data, isLoading, isConnected }) =>
 
   const renderItem = ({ item }) => {
     return (
-      <TouchableOpacity activeOpacity={1} onPress={() => navigation.navigate(screenString.SUB, {name: item.name})}>
+      <TouchableOpacity activeOpacity={1} onPress={() => navigation.navigate(screenString.SUB, {name: item.name, id: item._id})}>
         <View style={styles.containerTruyen}>
           {/* thumbnai */}
 

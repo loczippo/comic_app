@@ -1,6 +1,8 @@
 import React from 'react';
 import { View, TouchableOpacity, SafeAreaView, Text } from 'react-native';
 
+import Icon from 'react-native-vector-icons/Ionicons';
+
 
 import styles from './styles';
 
@@ -16,7 +18,7 @@ const GlobalHeader = ({navigation, showLeftButton, showRightButton, showSearchBu
         <View style={styles.leftButtonContainer}>
           {showLeftButton ? (
             <TouchableOpacity onPress={() => navigation.goBack()} hitSlop={hitSlop}>
-              <Text style={styles.leftButton_Icon}>⬅️</Text>
+              <Icon name="arrow-back" style={styles.leftButton_Icon} />
             </TouchableOpacity>
           ) : null}
         </View>
@@ -35,7 +37,7 @@ const GlobalHeader = ({navigation, showLeftButton, showRightButton, showSearchBu
         <View style={styles.rightButtonContainer}>
           {showRightButton ? (
             <TouchableOpacity activeOpacity={0.65} onPress={() => navigate('SettingScreen')} hitSlop={hitSlop}>
-              <Text style={styles.rightButton_Icon}>⚙️</Text>
+              <Icon name="menu" style={styles.rightButton_Icon} />
             </TouchableOpacity>
           ) : null}
         </View>

@@ -41,6 +41,7 @@ export default function HomeScreen({navigation}) {
 
   let [data, setData] = useState([])
   let [data1, setData1] = useState([])
+  let [data2, setData2] = useState([])
 
   useEffect(() => {
     if(!refreshing && isConnected) {
@@ -55,6 +56,14 @@ export default function HomeScreen({navigation}) {
       MangaService.randomManga1()
       .then((data) => {
         setData1(data);
+        if (refreshing) {
+          setRefreshing(false);
+        }
+      });
+
+      MangaService.randomManga1()
+      .then((data) => {
+        setData2(data);
         if (refreshing) {
           setRefreshing(false);
         }
@@ -174,108 +183,25 @@ export default function HomeScreen({navigation}) {
             </View>
           </View>
         </View>
-        {/* <View style={{flex: 1, alignItems: 'center', justifyContent: 'center'}}>
-          <Text
-            onPress={() => alert('this is a HomeScreen')}
-            style={{fontSize: 26, fontWeight: 'bold', color: 'black'}}>
-            Màn hình chính đây nè
-          </Text>
-          <Text
-            onPress={() => navigation.navigate(screenString.SUB)}
-            style={{fontSize: 26, fontWeight: 'bold', color: 'green'}}>
-            Vào trang SUB SCREEN
-          </Text>
-          <Text
-            onPress={() => navigation.navigate(screenString.SUB)}
-            style={{fontSize: 26, fontWeight: 'bold', color: 'green'}}>
-            Vào trang SUB SCREEN
-          </Text>
-          <Text
-            onPress={() => navigation.navigate(screenString.SUB)}
-            style={{fontSize: 26, fontWeight: 'bold', color: 'green'}}>
-            Vào trang SUB SCREEN
-          </Text>
-          <Text
-            onPress={() => navigation.navigate(screenString.SUB)}
-            style={{fontSize: 26, fontWeight: 'bold', color: 'green'}}>
-            Vào trang SUB SCREEN
-          </Text>
-          <Text
-            onPress={() => navigation.navigate(screenString.SUB)}
-            style={{fontSize: 26, fontWeight: 'bold', color: 'green'}}>
-            Vào trang SUB SCREEN
-          </Text>
-          <Text
-            onPress={() => navigation.navigate(screenString.SUB)}
-            style={{fontSize: 26, fontWeight: 'bold', color: 'green'}}>
-            Vào trang SUB SCREEN
-          </Text>
-          <Text
-            onPress={() => navigation.navigate(screenString.SUB)}
-            style={{fontSize: 26, fontWeight: 'bold', color: 'green'}}>
-            Vào trang SUB SCREEN
-          </Text>
-          <Text
-            onPress={() => navigation.navigate(screenString.SUB)}
-            style={{fontSize: 26, fontWeight: 'bold', color: 'green'}}>
-            Vào trang SUB SCREEN
-          </Text>
-          <Text
-            onPress={() => navigation.navigate(screenString.SUB)}
-            style={{fontSize: 26, fontWeight: 'bold', color: 'green'}}>
-            Vào trang SUB SCREEN
-          </Text>
-          <Text
-            onPress={() => navigation.navigate(screenString.SUB)}
-            style={{fontSize: 26, fontWeight: 'bold', color: 'green'}}>
-            Vào trang SUB SCREEN
-          </Text>
-          <Text
-            onPress={() => navigation.navigate(screenString.SUB)}
-            style={{fontSize: 26, fontWeight: 'bold', color: 'green'}}>
-            Vào trang SUB SCREEN
-          </Text>
-          <Text
-            onPress={() => navigation.navigate(screenString.SUB)}
-            style={{fontSize: 26, fontWeight: 'bold', color: 'green'}}>
-            Vào trang SUB SCREEN
-          </Text>
-          <Text
-            onPress={() => navigation.navigate(screenString.SUB)}
-            style={{fontSize: 26, fontWeight: 'bold', color: 'green'}}>
-            Vào trang SUB SCREEN
-          </Text>
-          <Text
-            onPress={() => navigation.navigate(screenString.SUB)}
-            style={{fontSize: 26, fontWeight: 'bold', color: 'green'}}>
-            Vào trang SUB SCREEN
-          </Text>
-          <Text
-            onPress={() => navigation.navigate(screenString.SUB)}
-            style={{fontSize: 26, fontWeight: 'bold', color: 'green'}}>
-            Vào trang SUB SCREEN
-          </Text>
-          <Text
-            onPress={() => navigation.navigate(screenString.SUB)}
-            style={{fontSize: 26, fontWeight: 'bold', color: 'green'}}>
-            Vào trang SUB SCREEN
-          </Text>
-          <Text
-            onPress={() => navigation.navigate(screenString.SUB)}
-            style={{fontSize: 26, fontWeight: 'bold', color: 'green'}}>
-            Vào trang SUB SCREEN
-          </Text>
-          <Text
-            onPress={() => navigation.navigate(screenString.SUB)}
-            style={{fontSize: 26, fontWeight: 'bold', color: 'green'}}>
-            Vào trang SUB SCREEN
-          </Text>
-          <Text
-            onPress={() => navigation.navigate(screenString.SUB)}
-            style={{fontSize: 26, fontWeight: 'bold', color: 'green'}}>
-            Vào trang SUB SCREEN
-          </Text>
-        </View> */}
+        <View style={[styles.listManagaContainer, {backgroundColor: 'white'}]}>
+          <View style={styles.listTruyenConGaiThichContainer}>
+            {/* title */}
+            <Text style={styles.title_truyenConGaiThich}>TỔNG HỢP DOUJINSHI</Text>
+
+            {/* list */}
+            <View
+              style={[
+                styles.list,
+                {
+                  display: 'flex',
+                  flexDirection: 'row',
+                  justifyContent: 'space-evenly',
+                },
+              ]}>
+              <MangaFlatList navigation={navigation}  data={data2} isLoading={isLoading} isConnected={isConnected}  />
+            </View>
+          </View>
+        </View>
       </ScrollView>
     </>
   );
