@@ -7,7 +7,7 @@ import screenString from '../constants/screens';
 
 import { createStackNavigator } from "@react-navigation/stack";
 import TabContainer from './TabContainer';
-
+import { ComicDetails, ComicReader } from '../screens';
 
 const Stack = createStackNavigator();
 
@@ -15,7 +15,9 @@ export default function MainContainer() {
   return (
     <NavigationContainer>
       <Stack.Navigator screenOptions={{ headerShown: false }}>
-        <Stack.Screen component={TabContainer} name={screenString.HOME} />
+        <Stack.Screen name={screenString.HOME} component={TabContainer} />
+        <Stack.Screen name={screenString.COMIC_DETAILS} component={ComicDetails} />
+        <Stack.Screen name={screenString.COMIC_READER} component={ComicReader} />
         </Stack.Navigator>
     </NavigationContainer>
   );

@@ -1,7 +1,8 @@
 export default {
-    HOME: 'Home',
-    DETAILS: 'Follow',
-    SETTINGS: 'Settings',
-    SEARCH: 'Search',
-    SUB: 'Sub',
+    HOME: 'Trang chủ',
+    DETAILS: 'Theo dõi',
+    SETTINGS: 'Cài đặt',
+    SEARCH: 'Tìm kiếm',
+    COMIC_DETAILS: 'Comic_Details',
+    COMIC_READER: 'Comic_Reader',
 }

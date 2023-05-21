@@ -1,8 +1,16 @@
 const axios = require('axios').default;
 class MangaService {
-  randomManga = async () => {
+  comicReader = async (id, index) => {
     try {
-      const data = (await axios.get('https://cdn1.apitruyen.tk/gettruyen')).data;
+      const data = (await axios.get(`https://cdn.apitruyen.tk/doctruyen/${id}/${index}`)).data;
+      return data;
+    } catch {
+      return [];
+    }
+  };
+  latestUpdateComic = async () => {
+    try {
+      const data = (await axios.get('https://cdn.apitruyen.tk/mobile/gettruyen')).data;
       return data;
     } catch {
       return [];

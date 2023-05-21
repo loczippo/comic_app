@@ -11,7 +11,7 @@ export default ScaledSheet.create({
 
     title_header: {
         fontSize: FontSizes.p,
-        color: Colors.info,
+        color: Colors.Colors.info,
         textAlign: 'center',
     },
 

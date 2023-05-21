@@ -15,7 +15,6 @@ const Tab = createBottomTabNavigator();
 export default function TabContainer() {
   return (
     <Tab.Navigator
-     
       initialRouteName={screenString.HOME}
       screenOptions={({route}) => ({
         tabBarLabelStyle: styles.tabBarLabelStyle,

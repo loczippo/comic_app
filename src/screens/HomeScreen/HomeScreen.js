@@ -15,7 +15,7 @@ import MangaService from '../../services/MangaService'
 
 import Images from '../../assets/images';
 
-import MangaFlatList from './MangaFlatList';
+import MangaFlatList from './ComicFlatList';
 import styles from './styles';
 import NetInfo from "@react-native-community/netinfo";
 
@@ -45,7 +45,7 @@ export default function HomeScreen({navigation}) {
 
   useEffect(() => {
     if(!refreshing && isConnected) {
-      MangaService.randomManga()
+      MangaService.latestUpdateComic()
       .then((data) => {
         setData(data);
         setIsLoading(false);
@@ -89,7 +89,7 @@ export default function HomeScreen({navigation}) {
         <View style={styles.menuContainer}>
           {/* Bang xep hang */}
           <TouchableOpacity
-            onPress={() => navigation.navigate(screenString.SUB)}>
+            onPress={{}}>
             <View style={[styles.menuButtonContainer, styles.menuRanking]}>
               <View style={styles.menuImageContainer}>
                 <Image
@@ -104,7 +104,7 @@ export default function HomeScreen({navigation}) {
                   fontWeight: 600,
                   fontSize: 16,
                 }}>
-                Ranking
+                Xếp hạng
               </Text>
             </View>
           </TouchableOpacity>
@@ -122,7 +122,7 @@ export default function HomeScreen({navigation}) {
                   fontWeight: 600,
                   fontSize: 16,
                 }}>
-                Classify
+                Thể loại
               </Text>
             </View>
           </TouchableOpacity>
@@ -140,7 +140,7 @@ export default function HomeScreen({navigation}) {
                   fontWeight: 600,
                   fontSize: 16,
                 }}>
-                New update
+                Mới cập nhật
               </Text>
             </View>
           </TouchableOpacity>
@@ -148,7 +148,7 @@ export default function HomeScreen({navigation}) {
         <View style={[styles.listManagaContainer, {backgroundColor: 'white'}]}>
           <View style={styles.listTruyenConGaiThichContainer}>
             {/* title */}
-            <Text style={styles.title_truyenConGaiThich}>GIRL MANGA</Text>
+            <Text style={styles.title_truyenConGaiThich}>TRUYỆN MỚI CẬP NHẬT</Text>
 
             {/* list */}
             <View
@@ -167,7 +167,7 @@ export default function HomeScreen({navigation}) {
         <View style={[styles.listManagaContainer, {backgroundColor: 'white'}]}>
           <View style={styles.listTruyenConGaiThichContainer}>
             {/* title */}
-            <Text style={styles.title_truyenConGaiThich}>BOY MANGA</Text>
+            <Text style={styles.title_truyenConGaiThich}>HENTAI [R21/R18/R16]</Text>
 
             {/* list */}
             <View

@@ -4,6 +4,7 @@ import styles from './styles';
 import Images from '../../assets/images';
 import NetInfo from "@react-native-community/netinfo"; // Thêm thư viện NetInfo
 import screenString from '../../constants/screens';
+import SimpleLineIcons from 'react-native-vector-icons/SimpleLineIcons';
 
 
 const PlaceholderComponent = () => {
@@ -39,14 +40,8 @@ const PlaceholderComponent = () => {
             style={[styles.manga_thumbnai, { height: 280, width: 175 }]}
           />
           <View style={styles.mangaViewsContainer}>
-            <Text
-              style={[
-                styles.eyeIcon,
-                { marginLeft: 10, marginRight: 5, fontSize: 20 },
-              ]}>
-              👀
-            </Text>
-            <Text style={[styles.manga_views, { marginTop: 4 }]}>
+          <SimpleLineIcons name="eye" style={styles.eyeIcon} />
+            <Text style={[styles.manga_views]}>
               {"1000"}
             </Text>
           </View>
@@ -102,14 +97,8 @@ const PlaceholderComponent = () => {
             style={[styles.manga_thumbnai, { height: 175, width: 175 }]}
           />
           <View style={styles.mangaViewsContainer}>
-            <Text
-              style={[
-                styles.eyeIcon,
-                { marginLeft: 10, marginRight: 5, fontSize: 20 },
-              ]}>
-              👀
-            </Text>
-            <Text style={[styles.manga_views, { marginTop: 4 }]}>
+          <SimpleLineIcons name="eye" style={styles.eyeIcon} />
+            <Text style={[styles.manga_views]}>
               {"1000"}
             </Text>
           </View>
@@ -159,7 +148,7 @@ const PlaceholderComponent = () => {
   )
 }
 
-export default MangaFlatList = ({ navigation, data, isLoading, isConnected }) => {
+export default ComicFlatList = ({ navigation, data, isLoading, isConnected }) => {
 
   const opacityAnimation = useRef(new Animated.Value(0)).current;
 
@@ -188,7 +177,9 @@ export default MangaFlatList = ({ navigation, data, isLoading, isConnected }) =>
 
   const renderItem = ({ item }) => {
     return (
-      <TouchableOpacity activeOpacity={1} onPress={() => navigation.navigate(screenString.SUB, {name: item.name, id: item._id})}>
+      <TouchableOpacity activeOpacity={1} onPress={() => {
+        navigation.navigate(screenString.COMIC_DETAILS, {name: item.name, id: item._id})
+      }}>
         <View style={styles.containerTruyen}>
           {/* thumbnai */}
 
@@ -200,14 +191,8 @@ export default MangaFlatList = ({ navigation, data, isLoading, isConnected }) =>
               style={styles.manga_thumbnai}
             />
             <View style={styles.mangaViewsContainer}>
-              <Text
-                style={[
-                  styles.eyeIcon,
-                  { marginLeft: 10, marginRight: 5, fontSize: 20 },
-                ]}>
-                👀
-              </Text>
-              <Text style={[styles.manga_views, { marginTop: 4 }]}>
+              <SimpleLineIcons name="eye" style={styles.eyeIcon} />
+              <Text style={styles.manga_views}>
                 {item.viewcounts}
               </Text>
             </View>

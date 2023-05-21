@@ -170,7 +170,7 @@ export default ScaledSheet.create({
 
     iconContent: {
         fontSize: FontSizes.FontSizes.h4,
-        color: Colors.GRAY,
+        color: Colors.BLUE_LIGHT,
         marginRight: Sizes.Sizes.s1,
     },
 
