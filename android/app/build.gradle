@@ -151,6 +151,10 @@ android {
 
 dependencies {
 
+    implementation project(':react-native-fast-image')
+
+    implementation project(':react-native-photo-view')
+
     implementation project(':react-native-vector-icons')
 
     implementation('com.facebook.fresco:fresco:2.0.0')

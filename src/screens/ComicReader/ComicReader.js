@@ -1,5 +1,5 @@
 import * as React from 'react';
-import { StyleSheet, Text, TouchableOpacity, View, ScrollView, Modal  } from 'react-native';
+import { StyleSheet, Text, TouchableOpacity, View, ScrollView, Modal } from 'react-native';
 import GlobalHeader from '../../components/Header/Header';
 
 import styles from './styles';
@@ -8,7 +8,8 @@ import GlobalContainer from '../../components/Container/Container';
 
 import MaterialCommunityIcons from 'react-native-vector-icons/MaterialCommunityIcons';
 
-import ImageViewer from 'react-native-image-zoom-viewer';
+import PhotoView from 'react-native-photo-view';
+import FastImage from 'react-native-fast-image'
 
 export default function ComicReader({ route, navigation }) {
 
@@ -43,10 +44,11 @@ export default function ComicReader({ route, navigation }) {
 
   const chapterImages = []
 
-  if(comicList.data) {
-    for (let i = 0;i < comicList.data.length; i++) {
+  if (comicList.data) {
+    for (let i = 0; i < comicList.data.length; i++) {
       chapterImages.push(comicList.data[i].url)
     }
+    // chapterImages.pop();
   }
 
 
@@ -94,7 +96,25 @@ export default function ComicReader({ route, navigation }) {
         {chapterImages.map((img, index) => {
           return (
             <View style={styles.imageContainer} key={index}>
-              <ImageViewer style={ styles.image } imageUrls={[{url: img}]} saveToLocalByLongPress={false} />
+              {/* <PhotoView
+                source={{ uri: img }}
+                minimumZoomScale={1}
+                maximumZoomScale={2}
+                androidScaleType="fitCenter"
+                // onLoad={() => console.log("Image loaded!")}
+                style={styles.image}
+                scale={1}
+                // showsHorizontalScrollIndicator={false}
+              /> */}
+              <FastImage
+                style={styles.image}
+                source={{
+                    uri: img,
+                    priority: FastImage.priority.high,
+                    // cache: FastImage.cacheControl.cacheOnly
+                }}
+                resizeMode={FastImage.resizeMode.cover}
+            />
             </View>
           )
         })}
