@@ -151,6 +151,8 @@ android {
 
 dependencies {
 
+    implementation project(':react-native-image-size')
+
     implementation project(':react-native-fast-image')
 
     implementation project(':react-native-photo-view')

@@ -12,6 +12,7 @@ import java.util.List;
 import com.oblador.vectoricons.VectorIconsPackage;
 import com.reactnative.photoview.PhotoViewPackage;
 import com.dylanvann.fastimage.FastImageViewPackage;
+import com.existfragger.rnimagesize.RNImageSizePackage;
 
 public class MainApplication extends Application implements ReactApplication {
 
@@ -31,6 +32,7 @@ public class MainApplication extends Application implements ReactApplication {
           // packages.add(new VectorIconsPackage());
           packages.add(new PhotoViewPackage());
           // packages.add(new FastImageViewPackage());
+          // packages.add(new RNImageSizePackage());
 
           return packages;
         }
