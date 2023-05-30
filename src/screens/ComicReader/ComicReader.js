@@ -1,5 +1,5 @@
-import * as React from 'react';
-import { StyleSheet, Text, TouchableOpacity, View, ScrollView, Image } from 'react-native';
+import React, { useState, useEffect } from 'react';
+import { StyleSheet, Text, TouchableOpacity, View, ScrollView, FlatList, ActivityIndicator, Image as Images } from 'react-native';
 import GlobalHeader from '../../components/Header/Header';
 
 import styles from './styles';
@@ -11,12 +11,18 @@ import MaterialCommunityIcons from 'react-native-vector-icons/MaterialCommunityI
 import PhotoView from 'react-native-photo-view';
 import FastImage from 'react-native-fast-image'
 import ImageSize from 'react-native-image-size'
+import { Dimensions } from 'react-native';
+import Image from 'react-native-scalable-image';
 
 export default function ComicReader({ route, navigation }) {
 
-  const { name, id, index } = route.params
+  const { width, height } = Dimensions.get('window');
+
+  const { name, id, index, length } = route.params
 
   let [comicList, setComicList] = React.useState({});
+
+  let [indexNavigate, setIndexNavigate] = React.useState(index);
 
   const [refreshing, setRefreshing] = React.useState(false);
 
@@ -38,8 +44,8 @@ export default function ComicReader({ route, navigation }) {
     }
   }, [refreshing]);
 
-  const disableButtonBackChapter = false;
-  const disableButtonNextChapter = false;
+  const disableButtonBackChapter = indexNavigate == 1 ? true : false;
+  const disableButtonNextChapter = indexNavigate == length ? true : false;
 
   // console.log(comicList.data.length)
 
@@ -49,27 +55,121 @@ export default function ComicReader({ route, navigation }) {
 
   if (comicList.data) {
     for (let i = 0; i < comicList.data.length; i++) {
-      chapterImages.push(comicList.data[i].url)
+      chapterImages.push({ url: comicList.data[i].url })
     }
     // chapterImages.pop();
   }
 
-  const [imgState, setImgState] = React.useState({
-    imgWidth: 0,
-    imgHeight: 0,
-  });
+  // console.log(chapterImages)
+
+  const onChapterPressed = params => {
+    if(params == 'back') {
+      MangaService.comicReader(id, indexNavigate-1).then(data => {
+        setIndexNavigate(indexNavigate-1)
+        setComicList(data);
+      });
+    } else if(params == 'next') {
+      MangaService.comicReader(id, indexNavigate+1).then(data => {
+        setIndexNavigate(indexNavigate+1)
+        setComicList(data);
+      });
+    }
+  }
 
 
-  const size = (url) => {
-    ImageSize.getSize(uri).then(size => {
-      // size.height
-      // size.width
-      setImgState({
-        imgWidth: size.width,
-        imgHeight: size.height,
+  const ScaledImage = props => {
+
+    const [width, setWidth] = useState()
+    const [height, setHeight] = useState()
+    const [imageLoading, setImageLoading] = useState(true)
+
+    useEffect(() => {
+      Images.getSize(props.uri, (width1, height1) => {
+        if (props.width && !props.height) {
+          setWidth(props.width)
+          setHeight(height1 * (props.width / width1))
+        } else if (!props.width && props.height) {
+          setWidth(width1 * (props.height / height1))
+          setHeight(props.height)
+        } else {
+          setWidth(width1)
+          setHeight(height1)
+        }
+        setImageLoading(false)
+      }, (error) => {
+        console.log("ScaledImage,Image.getSize failed with error: ", error)
       })
-  })
-  } 
+    }, [])
+
+
+    return (
+      height ?
+        <View style={{ height: height, width: width, borderRadius: 5, backgroundColor: "lightgray" }}>
+          {/* <Image
+                    source={{ uri: props.uri }}
+                    style={{ height: height, width: width }}
+                /> */}
+
+                {/* <PhotoView
+                source={{ uri: props.uri }}
+                // minimumZoomScale={1}
+                // maximumZoomScale={4}
+                androidScaleType="fitCenter"
+                // resizeMode="center"
+                // onLoad={() => console.log("Image loaded!")}
+                style={{ height: height, width: width }}
+                // scale={2}
+                // showsHorizontalScrollIndicator={false}
+              /> */}
+
+          <FastImage
+            style={{ width: width, height: height }}
+            source={{
+              uri: props.uri,
+              priority: FastImage.priority.high,
+              cache: FastImage.cacheControl.web
+            }}
+            resizeMode={FastImage.resizeMode.contain}
+          />
+        </View>
+        : imageLoading ?
+          <ActivityIndicator size="large" />
+          : null
+    );
+  }
+
+  const renderItem = (item) => {
+    // console.log(item.item.url)
+    return (
+      <View style={styles.imageContainer}>
+        <ScaledImage width={Dimensions.get('window').width * 1} uri={item.item.url} />
+        {/* <Image
+          width={Dimensions.get('window').width} // height will be calculated automatically
+          source={{ uri: item.item.url }}
+        /> */}
+        {/* <PhotoView
+                source={{ uri: item.item.url }}
+                // minimumZoomScale={1}
+                // maximumZoomScale={4}
+                androidScaleType="center"
+                // resizeMode="center"
+                // onLoad={() => console.log("Image loaded!")}
+                style={[styles.image]}
+                // scale={2}
+                // showsHorizontalScrollIndicator={false}
+              /> */}
+        {/* <FastImage
+          style={{width: width, height: height }}
+          source={{
+            uri: item.item.url,
+            priority: FastImage.priority.high,
+            // cache: FastImage.cacheControl.cacheOnly
+          }}
+          resizeMode={FastImage.resizeMode.contain}
+        /> */}
+      </View>
+    )
+  }
 
 
   return (
@@ -85,7 +185,7 @@ export default function ComicReader({ route, navigation }) {
         {/* button back*/}
         <TouchableOpacity
           disabled={disableButtonBackChapter}
-          onPress={() => this.onChapterPressed('back')}
+          onPress={() => onChapterPressed('back')}
         >
           <MaterialCommunityIcons name="chevron-left-box" style={[styles.iconBackNextChapter, disableButtonBackChapter ? styles.iconDisable : styles.iconEnable]} />
         </TouchableOpacity>
@@ -104,52 +204,23 @@ export default function ComicReader({ route, navigation }) {
         {/* button next */}
         <TouchableOpacity
           disabled={disableButtonNextChapter}
-          onPress={() => this.onChapterPressed('next')}
+          onPress={() => onChapterPressed('next')}
         >
           <MaterialCommunityIcons name="chevron-right-box" style={[styles.iconBackNextChapter, disableButtonNextChapter ? styles.iconDisable : styles.iconEnable]} />
         </TouchableOpacity>
       </View>
 
+      <FlatList
+        keyExtractor={(item) => {
+          return item.url;
+        }}
+        // horizontal
+        // showHorizontalScrollIndicator={false}
+        initialNumToRender={10}
+        data={chapterImages}
+        renderItem={renderItem}
+      />
 
-      <ScrollView>
-        {/* images */}
-        {chapterImages.map((img, index) => {
-          size(img);
-          return (
-            <View style={styles.imageContainer} key={index}>
-              {/* <PhotoView
-                source={{ uri: img }}
-                minimumZoomScale={1}
-                maximumZoomScale={4}
-                // androidScaleType="fitCenter"
-                // resizeMode="center"
-                // onLoad={() => console.log("Image loaded!")}
-                style={[styles.image, index != 0 ? { marginTop: 1000 } : {}]}
-                scale={2}
-                // showsHorizontalScrollIndicator={false}
-              /> */}
-              {/* <FastImage
-                style={[styles.image, index != 0 ? { marginTop: 1000 } : {}]}
-                source={{
-                    uri: img,
-                    priority: FastImage.priority.high,
-                    // cache: FastImage.cacheControl.cacheOnly
-                }}
-                resizeMode={FastImage.resizeMode.cover}
-            /> */}
-
-              <Image
-                                    // resizeMode={ 'cover' }
-                                    style={{height: imgState.imgHeight,
-                                      width: imgState.imgWidth,
-                                       flex:1}}
-                                    source={{ uri: img }}
-                                />
-            
-            </View>
-          )
-        })}
-      </ScrollView>
 
     </GlobalContainer>
   );

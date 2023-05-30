@@ -26,6 +26,7 @@
     "react-native-photo-view": "github:loczippo/react-native-photo-view",
     "react-native-reanimated": "^3.1.0",
     "react-native-safe-area-context": "^4.5.2",
+    "react-native-scalable-image": "^1.1.0",
     "react-native-screens": "^3.20.0",
     "react-native-size-matters": "^0.4.0",
     "react-native-vector-icons": "^9.2.0"

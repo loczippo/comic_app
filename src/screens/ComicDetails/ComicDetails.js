@@ -30,8 +30,6 @@ import colorString from '../../constants/colors';
 export default function ComicDetails({ route, navigation }) {
 
   const { name, id } = route.params;
-  // const name = "Hello";
-  // const id = "6456b93faf35ab19247fbddd"
 
   const [contentActive, setContentActive] = useState(false);
   const [isFollowing, setIsFollowing] = useState(false);
@@ -79,9 +77,9 @@ export default function ComicDetails({ route, navigation }) {
   let type2 = info.suggest_type || ";";
   
 
-  const onChapterPressed = (index, id, name) => {
+  const onChapterPressed = (index, id, name, length) => {
     navigation.navigate(screenString.COMIC_READER, {
-      index, id, name
+      index, id, name, length
     })
   }
 
@@ -89,7 +87,7 @@ export default function ComicDetails({ route, navigation }) {
     return (
       <TouchableHighlight
         underlayColor="#E1DCDC"
-        onPress={() => onChapterPressed(chapter.index, info._id, info.name)}>
+        onPress={() => onChapterPressed(chapter.index, info._id, info.name, info.listChapter.length)}>
         <View style={styles.rowItemChapter}>
           <Text style={styles.item_soChuong}>{chapter.name}</Text>
           <Text style={styles.item_capNhat}>{chapter.updatedAt}</Text>
