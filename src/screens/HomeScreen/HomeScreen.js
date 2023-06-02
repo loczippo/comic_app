@@ -100,7 +100,7 @@ export default function HomeScreen({ navigation }) {
         <View style={styles.menuContainer}>
           {/* Bang xep hang */}
           <TouchableOpacity
-            onPress={{}}>
+            onPress={() => { navigation.navigate(screenString.COMIC_RANKING) }}>
             <View style={[styles.menuButtonContainer, styles.menuRanking]}>
               <View style={styles.menuImageContainer}>
                 <Image
@@ -139,7 +139,7 @@ export default function HomeScreen({ navigation }) {
           </TouchableOpacity>
 
           {/* Cap nhat moi */}
-          <TouchableOpacity onPress={() => { }}>
+          <TouchableOpacity onPress={() => { navigation.navigate(screenString.COMIC_NEW_UPDATE) }}>
             <View style={[styles.menuButtonContainer, styles.menuCapNhatMoi]}>
               <View style={styles.menuImageContainer}>
                 <Image style={styles.menuImage} source={Images.menu.ic_new} />
