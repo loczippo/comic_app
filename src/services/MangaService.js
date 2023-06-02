@@ -2,7 +2,7 @@ const axios = require('axios').default;
 class MangaService {
   comicReader = async (id, index) => {
     try {
-      const data = (await axios.get(`https://cdn.apitruyen.tk/doctruyen/${id}/${index}`)).data;
+      const data = (await axios.get(`https://cdn.truyenxxhot.com/doctruyen/${id}/${index}`)).data;
       return data;
     } catch {
       return [];
@@ -10,7 +10,7 @@ class MangaService {
   };
   latestUpdateComic = async () => {
     try {
-      const data = (await axios.get('https://cdn.apitruyen.tk/mobile/gettruyen')).data;
+      const data = (await axios.get('https://cdn.truyenxxhot.com/mobile/gettruyen')).data;
       return data;
     } catch {
       return [];
@@ -18,7 +18,7 @@ class MangaService {
   };
   randomManga1 = async () => {
     try {
-      const data = (await axios.get('https://cdn.apitruyen.tk/randomtruyen?limit=3')).data;
+      const data = (await axios.get('https://cdn.truyenxxhot.com/randomtruyen?limit=3')).data;
       return data;
     } catch {
       return [];
@@ -26,7 +26,7 @@ class MangaService {
   };
   infoManga = async(id) => {
     try {
-      const data = (await axios.get(`https://cdn.apitruyen.tk/info/${id}`)).data;
+      const data = (await axios.get(`https://cdn.truyenxxhot.com/info/${id}`)).data;
       return data;
     } catch {
       return [];
