@@ -121,7 +121,7 @@ export default function ComicDetails({ route, navigation }) {
           showRightButton={true}
           children={<Text style={styles1.title_header}>{name}</Text>}
         />
-        {/* <ScrollView horizontal={true} refreshControl={
+         {/* <ScrollView horizontal={true} refreshControl={
       <RefreshControl colors={[colorString.BLUE_LIGHT]} refreshing={refreshing} onRefresh={onRefresh} />
     }> 
     </ScrollView> */}

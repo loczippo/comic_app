@@ -73,12 +73,12 @@ export default function HomeScreen({ navigation }) {
   }, [refreshing, isConnected]);
 
   const BannerData =
-    [{url: 'https://nakaomo216.files.wordpress.com/2014/10/bet-3_zpsa45bf545.jpg'},
-  {url: "https://cmavn.org/wp-content/uploads/2019/04/Banners2-1.jpg"}, {
-    url: "https://truyenbanquyen.com/wp-content/uploads/2018/04/BANNER-WEB.jpg"
-  }, {
-    url: "https://truyenbanquyen.com/wp-content/uploads/2018/01/BANNER-WEB-180102.jpg"
-  }]
+    [{ url: 'https://nakaomo216.files.wordpress.com/2014/10/bet-3_zpsa45bf545.jpg' },
+    { url: "https://cmavn.org/wp-content/uploads/2019/04/Banners2-1.jpg" }, {
+      url: "https://truyenbanquyen.com/wp-content/uploads/2018/04/BANNER-WEB.jpg"
+    }, {
+      url: "https://truyenbanquyen.com/wp-content/uploads/2018/01/BANNER-WEB-180102.jpg"
+    }]
 
   return (
     <>
