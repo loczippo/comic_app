@@ -10,6 +10,28 @@ import { ComicItem } from './ComicItem';
 
 
 const PlaceholderComponent = () => {
+  const opacityAnimation = useRef(new Animated.Value(0)).current;
+  const startPulseAnimation = () => {
+    Animated.sequence([
+      Animated.timing(opacityAnimation, {
+        toValue: 2,
+        duration: 200,
+        useNativeDriver: true,
+      }),
+      Animated.timing(opacityAnimation, {
+        toValue: 0,
+        duration: 900,
+        useNativeDriver: true,
+      }),
+    ]).start(() => {
+      startPulseAnimation();
+    });
+  };
+
+  useEffect(() => {
+    startPulseAnimation();
+  }, []);
+
   
   return (
     <>

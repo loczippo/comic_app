@@ -76,7 +76,7 @@ const Banner = ({ data }) => {
             source={{
               uri: item.url,
               priority: FastImage.priority.high,
-              cache: FastImage.cacheControl.web
+              // cache: FastImage.cacheControl.web
             }}
             resizeMode={FastImage.resizeMode.stretch}
           />

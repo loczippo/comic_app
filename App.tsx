@@ -19,10 +19,10 @@ import { NetworkProvider } from 'react-native-offline';
 function App(): JSX.Element {
   return (
     <>
-    <SafeAreaView style={{flex: 1}}>
-      <MainContainer />
-      <StatusBar animated={true} backgroundColor={colorString.BLUE_LIGHT} />
-    </SafeAreaView>
+      <SafeAreaView style={{ flex: 1 }}>
+        <MainContainer />
+        <StatusBar animated={true} backgroundColor={colorString.HEADER} />
+      </SafeAreaView>
     </>
   );
 }

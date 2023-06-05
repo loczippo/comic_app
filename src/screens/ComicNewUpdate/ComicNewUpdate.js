@@ -1,5 +1,5 @@
 import React, {useEffect, useState} from 'react';
-import {View, Text, FlatList, RefreshControl, ScrollView} from 'react-native';
+import {View, Text, FlatList, RefreshControl, ScrollView, ActivityIndicator} from 'react-native';
 
 import GlobalContainer from '../../components/Container/Container';
 import GlobalHeader from '../../components/Header/Header';
@@ -35,7 +35,7 @@ export default function ComicNewUpdate({navigation}) {
 
   useEffect(() => {
     if (!refreshing && isConnected) {
-      MangaService.latestUpdateComic(currentPage).then(data => {
+      MangaService.latestUpdateComic().then(data => {
         setData(data);
         setIsLoading(false);
         if (refreshing) {
@@ -62,8 +62,16 @@ export default function ComicNewUpdate({navigation}) {
   const loadMoreComic = () => {
     setCurrentPage(currentPage + 1)
     MangaService.latestUpdateComic(currentPage).then(result => {
-        setData([...data, result]);
+        setData([...data, ...result]);
       });
+  }
+
+  const renderLoader = () => {
+    return (
+        <View style={{marginVertical: 16, alignItems: 'center'}}>
+            <ActivityIndicator size={'large'} color={colorString.BLUE_LIGHT} />
+        </View>
+    )
   }
 
   return (
@@ -76,16 +84,16 @@ export default function ComicNewUpdate({navigation}) {
           <Text style={styles.title_header}>{'Truyện mới cập nhật'}</Text>
         }
       />
-
       <View style={{flex: 1}}>
-      
         <FlatList
+          initialNumToRender={5}
           horizontal={false}
           data={data}
           renderItem={renderComicItem}
           keyExtractor={comicKeyExtractor}
           onEndReached={loadMoreComic}
-          onEndReachedThreshold={0}
+          onEndReachedThreshold={0.5}
+          ListFooterComponent={renderLoader}
           refreshControl={
             <RefreshControl
               colors={[colorString.BLUE_LIGHT]}

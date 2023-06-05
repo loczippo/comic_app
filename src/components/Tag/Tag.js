@@ -3,10 +3,10 @@ import {View, Text} from 'react-native';
 
 import styles from './styles';
 
-const GlobalTag = ({data}) => {
+const GlobalTag = ({data, direction}) => {
 
   return (
-    <View style={styles.container}>
+    <View style={[styles.container, direction ? {marginLeft: 40} : {}]}>
       {data.map((tag, index) => {
         if (index < 3)
           return (

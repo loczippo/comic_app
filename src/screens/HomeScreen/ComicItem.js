@@ -1,10 +1,11 @@
-import React, {useRef} from 'react';
+import React, {useRef, useEffect} from 'react';
 import {Animated, Image, Text, TouchableOpacity, View} from 'react-native';
 import SimpleLineIcons from 'react-native-vector-icons/SimpleLineIcons';
 import screenString from '../../constants/screens';
 import styles from './styles';
 import FastImage from 'react-native-fast-image';
 import images from '../../assets/images';
+import GlobalTag from '../../components/Tag/Tag';
 
 export const ComicItem = ({item, direction, navigation, isLoading}) => {
   const opacityAnimation = useRef(new Animated.Value(0)).current;
@@ -28,6 +29,8 @@ export const ComicItem = ({item, direction, navigation, isLoading}) => {
   useEffect(() => {
     startPulseAnimation();
   }, []);
+
+  let type2 = item.suggest_type || ";";
 
   // console.log(isLoading)
   if (direction === 'vertical') {
@@ -70,6 +73,7 @@ export const ComicItem = ({item, direction, navigation, isLoading}) => {
               {item.name}
             </Text>
             {/* Chapter */}
+            <GlobalTag direction={direction} data={type2.split(";")} />
             <Text style={[styles.subText, {marginLeft: 40}]}>
               {item.latest_chapter}
             </Text>
