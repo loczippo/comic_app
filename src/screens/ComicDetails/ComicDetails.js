@@ -1,31 +1,25 @@
 import React, { useEffect, useState } from 'react';
 import {
-  StyleSheet,
-  Text,
-  TouchableOpacity,
-  View,
-  Image,
   FlatList,
+  Image,
+  Text,
   TouchableHighlight,
-  ScrollView,
-  RefreshControl
+  TouchableOpacity,
+  View
 } from 'react-native';
-import screenString from '../../constants/screens';
 import GlobalHeader from '../../components/Header/Header';
+import screenString from '../../constants/screens';
 
-import styles1 from '../../components/Header/styles';
+import FontAwesome5 from 'react-native-vector-icons/FontAwesome5';
 import Icon from 'react-native-vector-icons/MaterialIcons';
 import SimpleLineIcons from 'react-native-vector-icons/SimpleLineIcons';
-import FontAwesome5 from 'react-native-vector-icons/FontAwesome5';
-import MaterialCommunityIcons from 'react-native-vector-icons/MaterialCommunityIcons';
-import styles from './styles';
-import GlobalContainer from '../../components/Container/Container';
+import Images from '../../assets/images';
 import GlobalButton from '../../components/Button/Button';
+import GlobalContainer from '../../components/Container/Container';
+import styles1 from '../../components/Header/styles';
 import GlobalTag from '../../components/Tag/Tag';
 import MangaService from '../../services/MangaService';
-import Images from '../../assets/images';
-import colorString from '../../constants/colors';
-
+import styles from './styles';
 
 export default function ComicDetails({ route, navigation }) {
 
@@ -121,10 +115,6 @@ export default function ComicDetails({ route, navigation }) {
           showRightButton={true}
           children={<Text style={styles1.title_header}>{name}</Text>}
         />
-         {/* <ScrollView horizontal={true} refreshControl={
-      <RefreshControl colors={[colorString.BLUE_LIGHT]} refreshing={refreshing} onRefresh={onRefresh} />
-    }> 
-    </ScrollView> */}
         <View style={styles.container}>
           {/* tom tat truyen  */}
           <View style={styles.truyen_container}>
@@ -210,7 +200,7 @@ export default function ComicDetails({ route, navigation }) {
                   <Icon name="info" style={styles.iconContent} />
                 </View>
                 <View style={styles.tomTatTruyen_container}>
-                  <Text style={{ color: 'red' }}>{info.description == "Đang Cập Nhật" ? <>Truyện <Text style={{color: 'green'}}>{info.name}</Text> chưa được cập nhật mô tả</> : info.description}</Text>
+                  <Text style={{ color: 'red' }}>{info.description == "Đang Cập Nhật" ? <>Truyện <Text style={{color: 'green'}}>{info.name}</Text> chưa có mô tả</> : info.description}</Text>
                 </View>
               </View>
             ) : (

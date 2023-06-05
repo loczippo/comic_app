@@ -1,22 +1,17 @@
-import React, { useState, useEffect } from 'react';
-import { StyleSheet, Text, TouchableOpacity, View, ScrollView, FlatList, ActivityIndicator, Image as Images } from 'react-native';
+import React, { useEffect, useState } from 'react';
+import { ActivityIndicator, FlatList, Image as Images, Text, TouchableOpacity, View } from 'react-native';
 import GlobalHeader from '../../components/Header/Header';
 
-import styles from './styles';
-import MangaService from '../../services/MangaService';
 import GlobalContainer from '../../components/Container/Container';
+import MangaService from '../../services/MangaService';
+import styles from './styles';
 
 import MaterialCommunityIcons from 'react-native-vector-icons/MaterialCommunityIcons';
 
-import PhotoView from 'react-native-photo-view';
-import FastImage from 'react-native-fast-image'
-import ImageSize from 'react-native-image-size'
 import { Dimensions } from 'react-native';
-import Image from 'react-native-scalable-image';
+import FastImage from 'react-native-fast-image';
 
 export default function ComicReader({ route, navigation }) {
-
-  const { width, height } = Dimensions.get('window');
 
   const { name, id, index, length } = route.params
 
@@ -25,13 +20,6 @@ export default function ComicReader({ route, navigation }) {
   let [indexNavigate, setIndexNavigate] = React.useState(index);
 
   const [refreshing, setRefreshing] = React.useState(false);
-
-  const onRefresh = React.useCallback(() => {
-    setRefreshing(true);
-    setTimeout(() => {
-      setRefreshing(false);
-    }, 1000)
-  }, []);
 
   React.useEffect(() => {
     if (!refreshing) {

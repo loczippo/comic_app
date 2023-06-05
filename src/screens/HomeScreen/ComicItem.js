@@ -1,30 +1,57 @@
-import React, { useRef } from 'react';
-import { Animated, Image, Text, TouchableOpacity, View } from 'react-native';
+import React, {useRef} from 'react';
+import {Animated, Image, Text, TouchableOpacity, View} from 'react-native';
 import SimpleLineIcons from 'react-native-vector-icons/SimpleLineIcons';
 import screenString from '../../constants/screens';
 import styles from './styles';
-import FastImage from 'react-native-fast-image'
+import FastImage from 'react-native-fast-image';
+import images from '../../assets/images';
 
-export const ComicItem = ({ item, direction, navigation }) => {
+export const ComicItem = ({item, direction, navigation, isLoading}) => {
   const opacityAnimation = useRef(new Animated.Value(0)).current;
+  const startPulseAnimation = () => {
+    Animated.sequence([
+      Animated.timing(opacityAnimation, {
+        toValue: 2,
+        duration: 200,
+        useNativeDriver: true,
+      }),
+      Animated.timing(opacityAnimation, {
+        toValue: 0,
+        duration: 900,
+        useNativeDriver: true,
+      }),
+    ]).start(() => {
+      startPulseAnimation();
+    });
+  };
 
+  useEffect(() => {
+    startPulseAnimation();
+  }, []);
+
+  // console.log(isLoading)
   if (direction === 'vertical') {
     return (
-      <TouchableOpacity onPress={() => { navigation.navigate(screenString.COMIC_DETAILS, { name: item.name, id: item._id }) }}>
+      <TouchableOpacity
+        onPress={() => {
+          navigation.navigate(screenString.COMIC_DETAILS, {
+            name: item.name,
+            id: item._id,
+          });
+        }}>
         <View style={styles.containerHorizontal}>
           {/* thumbnai */}
 
-          <View style={{ flex: 1 }}>
+          <View style={{flex: 1}}>
             {/* <Image source={{
               uri: item.image,
             }} style={[styles.manga_thumbnai, {width: 130, resizeMode: 'cover'}]} /> */}
-
             <FastImage
-              style={{ width: 130, height: 135 }}
+              style={{width: 130, height: 135}}
               source={{
                 uri: item.image,
                 priority: FastImage.priority.high,
-                cache: FastImage.cacheControl.web
+                // cache: FastImage.cacheControl.web,
               }}
               resizeMode={FastImage.resizeMode.stretch}
             />
@@ -36,24 +63,36 @@ export const ComicItem = ({ item, direction, navigation }) => {
 
           <View style={styles.infoMangaHorizontal}>
             {/* name */}
-            <Text style={[styles.manga_name, { marginLeft: 40 }]} numberOfLines={2} ellipsizeMode="tail">{item.name}</Text>
+            <Text
+              style={[styles.manga_name, {marginLeft: 40}]}
+              numberOfLines={2}
+              ellipsizeMode="tail">
+              {item.name}
+            </Text>
             {/* Chapter */}
-            <Text style={[styles.subText, { marginLeft: 40 }]}>{item.latest_chapter}</Text>
-            <View style={[{ flexDirection: 'row' }, { marginLeft: 40 }]}>
+            <Text style={[styles.subText, {marginLeft: 40}]}>
+              {item.latest_chapter}
+            </Text>
+            <View style={[{flexDirection: 'row'}, {marginLeft: 40}]}>
               {/* Time */}
               <Text style={styles.subText}>Cập nhật: {item.ourTime}</Text>
               {/* View */}
-              <Text style={styles.subText} >9 views</Text>
+              <Text style={styles.subText}>{item.viewcounts} views</Text>
             </View>
           </View>
         </View>
       </TouchableOpacity>
-    )
+    );
   } else {
     return (
-      <TouchableOpacity activeOpacity={1} onPress={() => {
-        navigation.navigate(screenString.COMIC_DETAILS, { name: item.name, id: item._id })
-      }}>
+      <TouchableOpacity
+        activeOpacity={1}
+        onPress={() => {
+          navigation.navigate(screenString.COMIC_DETAILS, {
+            name: item.name,
+            id: item._id,
+          });
+        }}>
         <View style={styles.containerTruyen}>
           {/* thumbnai */}
 
@@ -66,9 +105,7 @@ export const ComicItem = ({ item, direction, navigation }) => {
             />
             <View style={styles.mangaViewsContainer}>
               <SimpleLineIcons name="eye" style={styles.eyeIcon} />
-              <Text style={styles.manga_views}>
-                {item.viewcounts}
-              </Text>
+              <Text style={styles.manga_views}>{item.viewcounts}</Text>
             </View>
           </View>
 
@@ -86,7 +123,7 @@ export const ComicItem = ({ item, direction, navigation }) => {
               }}>
               {item.ourTime}
             </Text>
-            <Animated.View style={{ opacity: opacityAnimation }}>
+            <Animated.View style={{opacity: opacityAnimation}}>
               <Text
                 style={{
                   fontSize: 13,
@@ -115,5 +152,4 @@ export const ComicItem = ({ item, direction, navigation }) => {
       </TouchableOpacity>
     );
   }
-
-}
+};

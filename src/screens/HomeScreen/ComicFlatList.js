@@ -10,27 +10,7 @@ import { ComicItem } from './ComicItem';
 
 
 const PlaceholderComponent = () => {
-  const opacityAnimation = useRef(new Animated.Value(0)).current;
-  const startPulseAnimation = () => {
-    Animated.sequence([
-      Animated.timing(opacityAnimation, {
-        toValue: 2,
-        duration: 200,
-        useNativeDriver: true,
-      }),
-      Animated.timing(opacityAnimation, {
-        toValue: 0,
-        duration: 900,
-        useNativeDriver: true,
-      }),
-    ]).start(() => {
-      startPulseAnimation();
-    });
-  };
-
-  useEffect(() => {
-    startPulseAnimation();
-  }, []);
+  
   return (
     <>
       <View style={styles.containerTruyen}>
@@ -184,23 +164,23 @@ export default ComicFlatList = ({ navigation, data, isLoading, isConnected }) =>
     return <PlaceholderComponent />;
   }
 
-  const renderItemManga = ({ item }) => {
+  const renderComicItem = ({ item }) => {
     return (
       <ComicItem item={item} navigation={navigation} />
     );
   }
-  const mangaKeyExtractor = (item) => {
+  const comicKeyExtractor = (item) => {
     return item._id;
   }
 
 
   return (
     <FlatList
-      keyExtractor={mangaKeyExtractor}
+      keyExtractor={comicKeyExtractor}
       horizontal
       showHorizontalScrollIndicator={false}
       data={data}
-      renderItem={renderItemManga}
+      renderItem={renderComicItem}
     />
   );
 };

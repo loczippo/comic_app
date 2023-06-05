@@ -8,9 +8,9 @@ class MangaService {
       return [];
     }
   };
-  latestUpdateComic = async () => {
+  latestUpdateComic = async (currentPage = 1) => {
     try {
-      const data = (await axios.get('https://cdn.truyenxxhot.com/mobile/gettruyen')).data;
+      const data = (await axios.get(`https://cdn.truyenxxhot.com/mobile/gettruyen?page=${currentPage}`)).data;
       return data;
     } catch {
       return [];
