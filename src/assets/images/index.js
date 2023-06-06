@@ -14,4 +14,6 @@ export default {
     welcome: require('./welcome.gif'),
     original: require('./original.gif'),
     loading: require('./loading.gif'),
+    vietnamflag: require('./vietnam-flag.png'),
+    usflag: require('./usflag.png'),
 };
