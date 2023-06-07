@@ -1,11 +1,14 @@
 import React, { useEffect, useState } from 'react';
+import AsyncStorage from '@react-native-async-storage/async-storage';
+
 import {
   FlatList,
   Image,
   Text,
   TouchableHighlight,
   TouchableOpacity,
-  View
+  View,
+  ToastAndroid,
 } from 'react-native';
 import GlobalHeader from '../../components/Header/Header';
 import screenString from '../../constants/screens';
@@ -20,16 +23,18 @@ import styles1 from '../../components/Header/styles';
 import GlobalTag from '../../components/Tag/Tag';
 import MangaService from '../../services/MangaService';
 import styles from './styles';
+import { addToAsyncStorageArray, removeFromAsyncStorageArray, isIssetAsyncStorageArray } from '../../utils/storage'
 
 export default function ComicDetails({ route, navigation }) {
 
   const { name, id } = route.params;
 
   const [contentActive, setContentActive] = useState(false);
-  const [isFollowing, setIsFollowing] = useState(false);
-  const [listFollowing, setListFollowing] = useState([]);
 
   const [refreshing, setRefreshing] = React.useState(false);
+
+  const [updateFollwing, setUpdateFollwing] = useState(false);
+  const [isFollowing, setIsFollowing] = useState(false);
 
   let [info, setInfo] = useState([]);
 
@@ -48,6 +53,11 @@ export default function ComicDetails({ route, navigation }) {
           setRefreshing(false);
         }
       });
+      isIssetAsyncStorageArray(keyStorage, {
+        _id: id
+      }).then(result => {
+        setIsFollowing(result)
+      })
     }
   }, [refreshing]);
 
@@ -58,7 +68,7 @@ export default function ComicDetails({ route, navigation }) {
     let icon = sortIcon == "sort-amount-down-alt" ? "sort-amount-up-alt" : "sort-amount-down-alt"
 
     setSortIcon(icon)
-    
+
     const tempInfo = { ...info }; // Tạo bản sao của đối tượng info
     tempInfo.listChapter = tempInfo.listChapter.reverse(); // Giá trị mới cho listChapter
 
@@ -67,14 +77,27 @@ export default function ComicDetails({ route, navigation }) {
     // setInfo(tempInfo)
   }
 
-  const type = ['Manga', 'Yuri', 'Manhwa'];
   let type2 = info.suggest_type || ";";
-  
 
+
+  const keyStorage = "folowList";
+
+  
+  
   const onChapterPressed = (index, id, name, length) => {
     navigation.navigate(screenString.COMIC_READER, {
       index, id, name, length
     })
+  }
+
+  const onFollowPressed = () => {
+    ToastAndroid.show(isFollowing ? "Đã bỏ theo dõi truyện" : "Đã thêm vào danh sách theo dõi", ToastAndroid.SHORT);
+    if (!isFollowing) {
+      addToAsyncStorageArray(keyStorage, { _id: id });
+    } else {
+      removeFromAsyncStorageArray(keyStorage, { _id: id });
+    }
+    setIsFollowing(previousState => !previousState)
   }
 
   const renderItemChapter = ({ item: chapter }) => {
@@ -106,136 +129,133 @@ export default function ComicDetails({ route, navigation }) {
   };
 
   return (
-      
-      <GlobalContainer>
-        {/* header */}
-        <GlobalHeader
-          navigation={navigation}
-          showLeftButton={true}
-          showRightButton={true}
-          children={<Text style={styles1.title_header}>{name}</Text>}
-        />
-        <View style={styles.container}>
-          {/* tom tat truyen  */}
-          <View style={styles.truyen_container}>
-            {/* thumbnai */}
-            <Image
-              style={styles.thumbnai}
-              source={info.image ? {
-                uri: info.image,
-              } : Images.loading}
-            />
 
-            {/* info */}
-            <View style={styles.info}>
-              {/* ten truyen */}
-              <Text style={styles.mangaName}>{name}</Text>
+    <GlobalContainer>
+      {/* header */}
+      <GlobalHeader
+        navigation={navigation}
+        showLeftButton={true}
+        showRightButton={true}
+        children={<Text style={styles1.title_header}>{name}</Text>}
+      />
+      <View style={styles.container}>
+        {/* tom tat truyen  */}
+        <View style={styles.truyen_container}>
+          {/* thumbnai */}
+          <Image
+            style={styles.thumbnai}
+            source={info.image ? {
+              uri: info.image,
+            } : Images.loading}
+          />
 
-              {/* Ten khác */}
-              <Text style={styles.otherMangaName}>
-                Tên khác: {info.other_name}
-              </Text>
+          {/* info */}
+          <View style={styles.info}>
+            {/* ten truyen */}
+            <Text style={styles.mangaName}>{name}</Text>
 
-              {/* Ten tac gia */}
-              <Text style={styles.autherName}>Tên tác giả: {info.author}</Text>
+            {/* Ten khác */}
+            <Text style={styles.otherMangaName}>
+              Tên khác: {info.other_name}
+            </Text>
 
-              {/* Trang thai */}
-              <Text style={styles.status}>Trạng thái: {info.status}</Text>
+            {/* Ten tac gia */}
+            <Text style={styles.autherName}>Tên tác giả: {info.author}</Text>
 
-              {/* tag the loai truyen */}
-              <GlobalTag data={type2.split(";")} />
+            {/* Trang thai */}
+            <Text style={styles.status}>Trạng thái: {info.status}</Text>
 
-              {/* Luot doc, thich */}
-              <View style={styles.viewLike_container}>
-                {/* views */}
-                <View style={styles.views_container}>
-                  <SimpleLineIcons name="eye" style={styles.eyeIcon} />
-                  <Text style={styles.views}>{info.viewcounts} lượt xem</Text>
-                </View>
-                {/* likes */}
-                <View style={styles.likes}>
-                  <Text style={styles.numberOfLike}>2.000</Text>
-                  <SimpleLineIcons name="like" style={styles.likeIcon} />
-                </View>
+            {/* tag the loai truyen */}
+            <GlobalTag data={type2.split(";")} />
+
+            {/* Luot doc, thich */}
+            <View style={styles.viewLike_container}>
+              {/* views */}
+              <View style={styles.views_container}>
+                <SimpleLineIcons name="eye" style={styles.eyeIcon} />
+                <Text style={styles.views}>{info.viewcounts} lượt xem</Text>
+              </View>
+              {/* likes */}
+              <View style={styles.likes}>
+                <Text style={styles.numberOfLike}>2.000</Text>
+                <SimpleLineIcons name="like" style={styles.likeIcon} />
               </View>
             </View>
           </View>
+        </View>
 
-          {/* menu tab */}
-          <View style={styles.menuTabContainer}>
-            <TouchableOpacity
-              style={styles.menuTabItem}
-              onPress={() => activeContent('content')}>
-              <View>
-                <Text
-                  style={
-                    contentActive ? styles.contentActive : styles.contentNotActive
-                  }>
-                  INTRODUCE
-                </Text>
+        {/* menu tab */}
+        <View style={styles.menuTabContainer}>
+          <TouchableOpacity
+            style={styles.menuTabItem}
+            onPress={() => activeContent('content')}>
+            <View>
+              <Text
+                style={
+                  contentActive ? styles.contentActive : styles.contentNotActive
+                }>
+                INTRODUCE
+              </Text>
+            </View>
+          </TouchableOpacity>
+
+          <View style={{ width: 1, backgroundColor: 'gray' }} />
+
+          <TouchableOpacity
+            style={styles.menuTabItem}
+            onPress={() => activeContent('chapters')}>
+            <View>
+              <Text
+                style={
+                  contentActive ? styles.contentNotActive : styles.contentActive
+                }>
+                MENU
+              </Text>
+            </View>
+          </TouchableOpacity>
+        </View>
+
+        <View style={{ flex: 1 }}>
+          {contentActive ? (
+            <View>
+              <View style={styles.tomTatTruyen_button}>
+                <Text style={{ marginVertical: 5, color: 'black' }}>Mô tả</Text>
+                <Icon name="info" style={styles.iconContent} />
               </View>
-            </TouchableOpacity>
-
-            <View style={{ width: 1, backgroundColor: 'gray' }} />
-
-            <TouchableOpacity
-              style={styles.menuTabItem}
-              onPress={() => activeContent('chapters')}>
-              <View>
-                <Text
-                  style={
-                    contentActive ? styles.contentNotActive : styles.contentActive
-                  }>
-                  MENU
-                </Text>
+              <View style={styles.tomTatTruyen_container}>
+                <Text style={{ color: 'red' }}>{info.description == "Đang Cập Nhật" ? <>Truyện <Text style={{ color: 'green' }}>{info.name}</Text> chưa có mô tả</> : info.description}</Text>
               </View>
-            </TouchableOpacity>
-          </View>
-
-          <View style={{ flex: 1 }}>
-            {contentActive ? (
-              <View>
-                <View style={styles.tomTatTruyen_button}>
-                  <Text style={{ marginVertical: 5, color: 'black' }}>Mô tả</Text>
-                  <Icon name="info" style={styles.iconContent} />
-                </View>
-                <View style={styles.tomTatTruyen_container}>
-                  <Text style={{ color: 'red' }}>{info.description == "Đang Cập Nhật" ? <>Truyện <Text style={{color: 'green'}}>{info.name}</Text> chưa có mô tả</> : info.description}</Text>
-                </View>
-              </View>
-            ) : (
-              <View style={styles.tabListChapterContainer}>
-                <View style={styles.headerItemChapter}>
-                  <Text style={[styles.headerItem_soChuong]} onPress={sortChapter}>Danh sách chương {" "}
-                    <FontAwesome5 name={sortIcon}
+            </View>
+          ) : (
+            <View style={styles.tabListChapterContainer}>
+              <View style={styles.headerItemChapter}>
+                <Text style={[styles.headerItem_soChuong]} onPress={sortChapter}>Danh sách chương {" "}
+                  <FontAwesome5 name={sortIcon}
                     onPress={sortChapter}
                   />
-                  </Text>
-                  <Text style={styles.headerItem_capNhat}>Cập nhật</Text>
-                </View>
-
-                <FlatList
-                  data={info.listChapter}
-                  renderItem={renderItemChapter}
-                  keyExtractor={mangaKeyExtractor}
-                />
+                </Text>
+                <Text style={styles.headerItem_capNhat}>Cập nhật</Text>
               </View>
-            )}
-          </View>
-        </View>
 
-        {/* theo doi button */}
-        <View style={styles.buttonContainer}>
-          <GlobalButton
-            style={styles.buttonFollow}
-            type="outlinePrimary"
-            locKey={
-              isFollowing ? 'MangaScreen.following' : 'MangaScreen.button_follow'
-            }
-            onPress={() => setIsFollowing(!isFollowing)}>
-            <Text>{isFollowing? "Bỏ theo dõi": "Theo dõi"}</Text>
-          </GlobalButton>
+              <FlatList
+                data={info.listChapter}
+                renderItem={renderItemChapter}
+                keyExtractor={mangaKeyExtractor}
+              />
+            </View>
+          )}
         </View>
-      </GlobalContainer>
+      </View>
+
+      {/* theo doi button */}
+      <View style={styles.buttonContainer}>
+        <GlobalButton
+          style={styles.buttonFollow}
+          type="outlinePrimary"
+          onPress={onFollowPressed}>
+          <Text>{isFollowing ? "Bỏ theo dõi" : "Theo dõi"}</Text>
+        </GlobalButton>
+      </View>
+    </GlobalContainer>
   );
 }

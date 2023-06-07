@@ -81,7 +81,7 @@ export const ComicItem = ({item, direction, navigation, isLoading}) => {
               {/* Time */}
               <Text style={styles.subText}>Cập nhật: {item.ourTime}</Text>
               {/* View */}
-              <Text style={styles.subText}>{item.viewcounts} views</Text>
+              <Text style={styles.subText}>{item.viewcounts} lượt xem</Text>
             </View>
           </View>
         </View>

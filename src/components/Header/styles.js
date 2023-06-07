@@ -45,7 +45,7 @@ export default ScaledSheet.create({
     },
 
     rightButton_Icon: {
-        top: '3@ms',
+        // top: '3@ms',
         color: Colors.GRAY,
         fontSize: FontSizes.FontSizes.large,
     },

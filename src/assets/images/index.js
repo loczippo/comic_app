@@ -16,4 +16,6 @@ export default {
     loading: require('./loading.gif'),
     vietnamflag: require('./vietnam-flag.png'),
     usflag: require('./usflag.png'),
+    bgbranch: require('./bg_branch.gif'),
+    bgbranch1: require('./bg_branch1.gif'),
 };
