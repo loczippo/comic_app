@@ -1,6 +1,4 @@
 import React, { useEffect, useState } from 'react';
-import AsyncStorage from '@react-native-async-storage/async-storage';
-
 import {
   FlatList,
   Image,
@@ -23,9 +21,14 @@ import styles1 from '../../components/Header/styles';
 import GlobalTag from '../../components/Tag/Tag';
 import MangaService from '../../services/MangaService';
 import styles from './styles';
-import { addToAsyncStorageArray, removeFromAsyncStorageArray, isIssetAsyncStorageArray } from '../../utils/storage'
+import { addToAsyncStorageArray, removeFromAsyncStorageArray, isIssetAsyncStorageArray, countAsyncStorage } from '../../utils/storage'
+import config from '../../config';
+import { useDispatch, useSelector } from 'react-redux';
+import { setStorageCount } from '../../redux/storageSlice';
 
 export default function ComicDetails({ route, navigation }) {
+
+  const dispatch = useDispatch();
 
   const { name, id } = route.params;
 
@@ -33,7 +36,6 @@ export default function ComicDetails({ route, navigation }) {
 
   const [refreshing, setRefreshing] = React.useState(false);
 
-  const [updateFollwing, setUpdateFollwing] = useState(false);
   const [isFollowing, setIsFollowing] = useState(false);
 
   let [info, setInfo] = useState([]);
@@ -47,13 +49,13 @@ export default function ComicDetails({ route, navigation }) {
 
   useEffect(() => {
     if (!refreshing) {
-      MangaService.infoManga(id).then(data => {
+      MangaService.comicInfo(id).then(data => {
         setInfo(data);
         if (refreshing) {
           setRefreshing(false);
         }
       });
-      isIssetAsyncStorageArray(keyStorage, {
+      isIssetAsyncStorageArray(config.KEY_STORAGE, {
         _id: id
       }).then(result => {
         setIsFollowing(result)
@@ -77,12 +79,10 @@ export default function ComicDetails({ route, navigation }) {
     // setInfo(tempInfo)
   }
 
+  const storageCount = useSelector(state => state.storage.count);
+
+
   let type2 = info.suggest_type || ";";
-
-
-  const keyStorage = "folowList";
-
-  
   
   const onChapterPressed = (index, id, name, length) => {
     navigation.navigate(screenString.COMIC_READER, {
@@ -93,10 +93,13 @@ export default function ComicDetails({ route, navigation }) {
   const onFollowPressed = () => {
     ToastAndroid.show(isFollowing ? "Đã bỏ theo dõi truyện" : "Đã thêm vào danh sách theo dõi", ToastAndroid.SHORT);
     if (!isFollowing) {
-      addToAsyncStorageArray(keyStorage, { _id: id });
+      addToAsyncStorageArray(config.KEY_STORAGE, { _id: id });
     } else {
-      removeFromAsyncStorageArray(keyStorage, { _id: id });
+      removeFromAsyncStorageArray(config.KEY_STORAGE, { _id: id });
     }
+    countAsyncStorage(config.KEY_STORAGE).then(result => {
+      dispatch(setStorageCount(result));
+    })
     setIsFollowing(previousState => !previousState)
   }
 

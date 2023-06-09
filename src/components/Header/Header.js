@@ -6,6 +6,10 @@ import FontAwesome from 'react-native-vector-icons/FontAwesome';
 
 import styles from './styles';
 import colorString from '../../constants/colors';
+import { countAsyncStorage } from '../../utils/storage';
+import config from '../../config';
+import { useDispatch } from 'react-redux';
+import { setStorageCount } from '../../redux/storageSlice';
 
 const GlobalHeader = ({ navigation, showLeftButton, showRightButton, showSearchButton, locKey, children, showComment }) => {
 
@@ -80,14 +84,18 @@ const GlobalHeader = ({ navigation, showLeftButton, showRightButton, showSearchB
   };
 
 
-
   return (
     <SafeAreaView>
       <View style={styles.container}>
         {/* Left button - Back */}
         <View style={styles.leftButtonContainer}>
           {showLeftButton ? (
-            <TouchableOpacity onPress={() => navigation.goBack()} hitSlop={hitSlop}>
+            <TouchableOpacity onPress={() => {
+              countAsyncStorage(config.KEY_STORAGE).then(result => {
+                useDispatch(setStorageCount(result));
+              })
+              navigation.goBack();
+              }} hitSlop={hitSlop}>
               <Icon name="arrow-back" style={styles.leftButton_Icon} />
             </TouchableOpacity>
           ) : null}

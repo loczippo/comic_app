@@ -66,12 +66,21 @@ export const removeFromAsyncStorageArray = async (key, itemToRemove) => {
   }
 };
 
+export const getAsyncStorage = async (key) => {
+  try {
+    // Lấy mảng hiện tại từ AsyncStorage
+    const currentArray = await AsyncStorage.getItem(key);
+    return JSON.parse(currentArray);
+  } catch (error) {
+    console.log(error);
+  }
+};
+
 export const countAsyncStorage = async (key) => {
   try {
     // Lấy mảng hiện tại từ AsyncStorage
-    let count = 0;
     const currentArray = await AsyncStorage.getItem(key);
-    return count = JSON.parse(currentArray).length;
+    return JSON.parse(currentArray).length;
   } catch (error) {
     console.log(error);
   }

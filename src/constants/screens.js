@@ -1,6 +1,6 @@
 export default {
     HOME: 'Trang chủ',
-    DETAILS: 'Theo dõi',
+    FOLLOW: 'Theo dõi',
     SETTINGS: 'Cài đặt',
     SEARCH: 'Tìm kiếm',
     COMIC_DETAILS: 'Comic_Details',

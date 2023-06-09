@@ -64,7 +64,7 @@ export const ComicItem = ({item, direction, navigation, isLoading}) => {
                     </View> */}
           </View>
 
-          <View style={styles.infoMangaHorizontal}>
+          <View style={styles.comicInfoHorizontal}>
             {/* name */}
             <Text
               style={[styles.manga_name, {marginLeft: 40}]}

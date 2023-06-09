@@ -46,7 +46,7 @@ export default function HomeScreen({ navigation }) {
 
   useEffect(() => {
     if (!refreshing && isConnected) {
-      MangaService.latestUpdateComic()
+      MangaService.latestUpdateComic(1, 5)
         .then((data) => {
           setData(data);
           setIsLoading(false);

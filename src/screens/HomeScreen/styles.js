@@ -140,7 +140,7 @@ containerHorizontal: {
     borderBottomColor: Colors.Colors.lightBackground
 },
 
-infoMangaHorizontal: {
+comicInfoHorizontal: {
     flex: 3,
     marginLeft: Sizes.Sizes.s1,  
     justifyContent: 'space-between',

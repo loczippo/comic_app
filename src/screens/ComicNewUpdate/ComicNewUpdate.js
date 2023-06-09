@@ -14,7 +14,7 @@ export default function ComicNewUpdate({ navigation }) {
   const [refreshing, setRefreshing] = React.useState(false);
   const [isLoading, setIsLoading] = React.useState(true);
 
-  const [currentPage, setCurrentPage] = React.useState(1)
+  const [currentPage, setCurrentPage] = React.useState(0)
 
   const [isConnected, setIsConnected] = React.useState(false);
 
@@ -25,25 +25,28 @@ export default function ComicNewUpdate({ navigation }) {
   }, [isConnected]);
 
   const onRefresh = React.useCallback(() => {
-    setRefreshing(true);
     setTimeout(() => {
-      setRefreshing(false);
-    }, 1000);
+      ToastAndroid.show('Đang làm mới truyện', ToastAndroid.SHORT);
+      MangaService.latestUpdateComic(currentPage + 1, 15).then(result => {
+          setCurrentPage(0)
+          setData(result);
+      });
+    }, 2000)
   }, []);
 
   let [data, setData] = useState([]);
 
-  useEffect(() => {
-    if (!refreshing && isConnected) {
-      MangaService.latestUpdateComic().then(data => {
-        setData(data);
-        setIsLoading(false);
-        if (refreshing) {
-          setRefreshing(false);
-        }
-      });
-    }
-  }, [refreshing, isConnected]);
+  // useEffect(() => {
+  //   if (!refreshing && isConnected) {
+  //     MangaService.latestUpdateComic().then(data => {
+  //       setData(data);
+  //       setIsLoading(false);
+  //       if (refreshing) {
+  //         setRefreshing(false);
+  //       }
+  //     });
+  //   }
+  // }, [refreshing, isConnected]);
 
   const renderComicItem = ({ item }) => {
     return (
@@ -64,7 +67,7 @@ export default function ComicNewUpdate({ navigation }) {
 
   const loadMoreComic = () => {
     setTimeout(() => {
-      MangaService.latestUpdateComic(currentPage + 1).then(result => {
+      MangaService.latestUpdateComic(currentPage + 1, 15).then(result => {
         if (Array.isArray(result)) {
           setCurrentPage(currentPage + 1)
           setData([...data, ...result]);
@@ -101,7 +104,7 @@ export default function ComicNewUpdate({ navigation }) {
       />
       <View style={{ flex: 1 }}>
         <FlatList
-          initialNumToRender={4}
+          initialNumToRender={5}
           horizontal={false}
           data={data}
           renderItem={renderComicItem}

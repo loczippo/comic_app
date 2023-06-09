@@ -1,33 +1,31 @@
 const axios = require('axios').default;
+
+import config from '../config';
 class MangaService {
   comicReader = async (id, index) => {
     try {
-      const data = (await axios.get(`https://cdn.truyenxxhot.com/doctruyen/${id}/${index}`)).data;
-      return data;
+      return (await axios.get(`${config.API_URL}/doctruyen/${id}/${index}`)).data;
     } catch {
       return [];
     }
   };
-  latestUpdateComic = async (currentPage = 1) => {
+  latestUpdateComic = async (currentPage = 1, limit = 5) => {
     try {
-      const data = (await axios.get(`https://cdn.truyenxxhot.com/mobile/gettruyen?page=${currentPage}`)).data;
-      return data;
+      return (await axios.get(`${config.API_URL}/mobile/gettruyen?page=${currentPage}&limit=${limit}`)).data;
     } catch {
       return [];
     }
   };
   randomManga1 = async () => {
     try {
-      const data = (await axios.get('https://cdn.truyenxxhot.com/randomtruyen?limit=3')).data;
-      return data;
+      return (await axios.get(`${config.API_URL}/randomtruyen?limit=3`)).data;
     } catch {
       return [];
     }
   };
-  infoManga = async(id) => {
+  comicInfo = async(id) => {
     try {
-      const data = (await axios.get(`https://cdn.truyenxxhot.com/info/${id}`)).data;
-      return data;
+      return (await axios.get(`${config.API_URL}/info/${id}`)).data;
     } catch {
       return [];
     }
