@@ -13,6 +13,7 @@ import com.oblador.vectoricons.VectorIconsPackage;
 import com.reactnative.photoview.PhotoViewPackage;
 import com.dylanvann.fastimage.FastImageViewPackage;
 import com.existfragger.rnimagesize.RNImageSizePackage;
+import com.microsoft.codepush.react.CodePush;
 
 public class MainApplication extends Application implements ReactApplication {
 
@@ -35,6 +36,11 @@ public class MainApplication extends Application implements ReactApplication {
           // packages.add(new RNImageSizePackage());
 
           return packages;
+        }
+
+        @Override
+        protected String getJSBundleFile() {
+            return CodePush.getJSBundleFile();
         }
 
         @Override

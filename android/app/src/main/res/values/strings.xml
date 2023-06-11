@@ -1,3 +1,4 @@
 <resources>
     <string name="app_name">Đọc Truyện Online</string>
+    <string moduleConfig="true" name="CodePushDeploymentKey">QPUbKTqOh0JgI51S-R4-qUudZSjwmV8gXtKRV</string>
 </resources>
