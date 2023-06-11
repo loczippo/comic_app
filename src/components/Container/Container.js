@@ -1,5 +1,5 @@
 import React from 'react';
-import { SafeAreaView, View, KeyboardAvoidingView, Platform } from 'react-native';
+import { View } from 'react-native';
 
 import styles from './styles';
 

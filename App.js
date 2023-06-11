@@ -13,22 +13,12 @@ import {
 
 import colorString from './src/constants/colors';
 
-import MainContainer from './src/navigation/MainContainer';
-import { NetworkProvider } from 'react-native-offline';
 import { Provider } from 'react-redux';
+import MainContainer from './src/navigation/MainContainer';
 
 import store from './src/redux/store';
-import { countAsyncStorage } from './src/utils/storage';
-import config from './src/config';
-import { useDispatch } from 'react-redux';
-import { setStorageCount } from './src/redux/storageSlice';
 
 function App() {
-
-  countAsyncStorage(config.KEY_STORAGE).then(result => {
-    console.log(result)
-    useDispatch(setStorageCount(result));
-  })
 
   return (
     <Provider store={store}>

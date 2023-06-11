@@ -1,5 +1,5 @@
 
-import { ScaledSheet, moderateScale, verticalScale } from 'react-native-size-matters';
+import { moderateScale, verticalScale } from 'react-native-size-matters';
 
 export default {
     IconSizes: {

@@ -28,6 +28,9 @@ export default function FollowScreen({ navigation }) {
   useFocusEffect(
     React.useCallback(() => {
       getAsyncStorage(config.KEY_STORAGE).then(storageResult => {
+
+        if(!storageResult) return;
+
         Promise.all(storageResult.map(storageItem => {
           return MangaService.comicInfo(storageItem._id).then(result => {
             delete result.listChapter;
@@ -35,9 +38,9 @@ export default function FollowScreen({ navigation }) {
           });
         })).then(results => {
           setData(results);
-          setIsLoading(false);
         });
       });
+      setIsLoading(false);
   
       return () => {
         // Code cleanup (nếu cần) khi màn hình không còn được focus
@@ -69,7 +72,7 @@ export default function FollowScreen({ navigation }) {
       <View style={{ flex: 1 }}>
         {isLoading ? (
           <ActivityIndicator />
-        ) : (
+        ) : data.length == 0 ? <Text style={{margin: 10, textAlign: 'center', color: 'gray', fontSize: 16}}>Danh sách truyện theo dõi trống</Text> : (
           <FlatList
             initialNumToRender={5}
             horizontal={false}

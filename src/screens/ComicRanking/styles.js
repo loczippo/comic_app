@@ -13,4 +13,18 @@ export default ScaledSheet.create({
         color: Colors.Colors.info,
         textAlign: 'center',
     },
+    container: {
+        flex: 1,
+      },
+      tabBar: {
+        flexDirection: 'row',
+        backgroundColor: 'rgba(0, 0, 0, 0.01)',
+        padding: 10,
+        paddingBottom: 0
+      },
+      tabItem: {
+        flex: 1,
+        alignItems: 'center',
+        // padding: 16,
+      },
 });

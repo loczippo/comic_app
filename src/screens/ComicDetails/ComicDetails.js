@@ -79,9 +79,6 @@ export default function ComicDetails({ route, navigation }) {
     // setInfo(tempInfo)
   }
 
-  const storageCount = useSelector(state => state.storage.count);
-
-
   let type2 = info.suggest_type || ";";
   
   const onChapterPressed = (index, id, name, length) => {
@@ -137,6 +134,7 @@ export default function ComicDetails({ route, navigation }) {
       {/* header */}
       <GlobalHeader
         navigation={navigation}
+        comicId={id}
         showLeftButton={true}
         showRightButton={true}
         children={<Text style={styles1.title_header}>{name}</Text>}

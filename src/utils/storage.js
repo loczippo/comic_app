@@ -4,22 +4,28 @@ export const addToAsyncStorageArray = async (key, newItem) => {
   try {
 
     const check = await isIssetAsyncStorageArray(key, newItem);
-    if(check) return;
+    if (check) return;
+
+    let newArray = [];
 
     let currentArray = await AsyncStorage.getItem(key);
-    // Thêm đối tượng mới vào mảng
-    currentArray = JSON.parse(currentArray)
-    currentArray.push(newItem);
 
+    if (currentArray != null) {
+      // Thêm đối tượng mới vào mảng
+      newArray = JSON.parse(currentArray)
+      newArray.push(newItem);
+    } else {
+      newArray.push(newItem);
+    }
     // Lưu mảng đã cập nhật trở lại vào AsyncStorage
-    await AsyncStorage.setItem(key, JSON.stringify(currentArray));
+    await AsyncStorage.setItem(key, JSON.stringify(newArray));
     console.log(`Đã thêm _id: ${newItem._id} vào mảng`)
   } catch (error) {
     console.log(error);
   }
 };
 
-export const isIssetAsyncStorageArray = async(key, itemToCheck) => {
+export const isIssetAsyncStorageArray = async (key, itemToCheck) => {
   const currentArray = await AsyncStorage.getItem(key);
   let newArray = [];
 
@@ -70,6 +76,9 @@ export const getAsyncStorage = async (key) => {
   try {
     // Lấy mảng hiện tại từ AsyncStorage
     const currentArray = await AsyncStorage.getItem(key);
+
+    if (currentArray == null) return null;
+
     return JSON.parse(currentArray);
   } catch (error) {
     console.log(error);
@@ -80,7 +89,10 @@ export const countAsyncStorage = async (key) => {
   try {
     // Lấy mảng hiện tại từ AsyncStorage
     const currentArray = await AsyncStorage.getItem(key);
-    return JSON.parse(currentArray).length;
+    if (currentArray != null) {
+      return JSON.parse(currentArray).length;
+    }
+    return 0;
   } catch (error) {
     console.log(error);
   }

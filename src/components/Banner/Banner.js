@@ -1,12 +1,11 @@
 import React, { useEffect, useState } from "react";
 import {
-    Animated,
-    Image,
-    View,
-    Dimensions
+  Animated,
+  Dimensions,
+  View
 } from "react-native";
-import FastImage from 'react-native-fast-image'
-const { width, height } = Dimensions.get("window");
+import FastImage from 'react-native-fast-image';
+const { width } = Dimensions.get("window");
 
 import styles from "./styles";
 

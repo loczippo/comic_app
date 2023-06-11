@@ -1,13 +1,87 @@
 import * as React from 'react';
-import { View, Text } from 'react-native';
+import { View, Text, useWindowDimensions, TouchableOpacity, Animated } from 'react-native';
 
 import screenString from '../../constants/screens';
 import GlobalContainer from '../../components/Container/Container';
 import GlobalHeader from '../../components/Header/Header';
 import styles from './styles';
+import { TabView, SceneMap } from 'react-native-tab-view';
+
+const FirstRoute = () => (
+    <View style={{ flex: 1, backgroundColor: 'yellow' }} />
+);
+
+const SecondRoute = () => (
+    <View style={{ flex: 1, backgroundColor: '#673ab7' }} />
+);
+const ThirdRoute = () => (
+    <View style={{ flex: 1, backgroundColor: 'green' }} />
+);
+
 
 export default function ComicRanking({ navigation }) {
-    console.log(process.env.REACT_APP_API_URL)
+
+    const [index, setIndex] = React.useState(0);
+    const [routes] = React.useState([
+        { key: 'first', title: 'TOP Ngày' },
+        { key: 'second', title: 'TOP Tuần' },
+        { key: 'third', title: 'TOP Tháng' },
+    ]);
+
+    const handleIndexChange = React.useCallback((newIndex) => {
+        setIndex(newIndex);
+    }, []);
+
+
+    const renderScene = SceneMap({
+        first: FirstRoute,
+        second: SecondRoute,
+        third: ThirdRoute,
+    });
+
+    const handleOnClick = (index) => {
+        setActiveIndex(index);
+    };
+
+    const [activeIndex, setActiveIndex] = React.useState(0);
+
+
+    const renderTabBar = React.useCallback((props) => {
+        return (
+          <View style={styles.tabBar}>
+            {props.navigationState.routes.map((route, i) => {
+              const isActive = activeIndex === i;
+              return (
+                <TouchableOpacity
+                  style={styles.tabItem}
+                  activeOpacity={1}
+                  onPress={() => {
+                    setIndex(i)
+                    handleOnClick(i)
+                  }}
+                  key={route.key}
+                >
+                  <Animated.Text style={{ color: 'black', fontWeight: 500, fontSize: 17 }}>
+                    {route.title}
+                  </Animated.Text>
+                  <Text
+                    style={[
+                      {
+                        backgroundColor: '#f0564a',
+                        width: '90%',
+                        height: 3,
+                        marginTop: '10%',
+                      },
+                      isActive ? {} : { height: 0 },
+                    ]}
+                  ></Text>
+                </TouchableOpacity>
+              );
+            })}
+          </View>
+        );
+      }, [activeIndex]);
+
     return (
 
         <GlobalContainer>
@@ -17,9 +91,15 @@ export default function ComicRanking({ navigation }) {
                 showRightButton={false}
                 children={<Text style={styles.title_header}>{"Xếp hạng truyện"}</Text>}
             />
-            <View style={{ flex: 1, alignItems: 'center', justifyContent: 'center' }}>
+            <TabView
+                navigationState={{ index, routes }}
+                renderScene={renderScene}
+                renderTabBar={renderTabBar}
+                onIndexChange={handleIndexChange}
+            />
+            {/* <View style={{ flex: 1, alignItems: 'center', justifyContent: 'center' }}>
                 <Text style={{ fontSize: 26, fontWeight: 'bold', color: 'black' }}>{screenString.COMIC_RANKING} screen</Text>
-            </View>
+            </View> */}
 
         </GlobalContainer>
     )

@@ -119,6 +119,7 @@ export default function ComicReader({ route, navigation }) {
     <GlobalContainer>
       <GlobalHeader
         navigation={navigation}
+        comicId={id}
         showLeftButton={true}
         showRightButton={true}
         children={<Text style={styles.title_header}>{name}</Text>}

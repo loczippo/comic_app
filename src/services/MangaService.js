@@ -23,11 +23,39 @@ class MangaService {
       return [];
     }
   };
-  comicInfo = async(id) => {
+  comicInfo = async (id) => {
     try {
       return (await axios.get(`${config.API_URL}/info/${id}`)).data;
     } catch {
       return [];
+    }
+  }
+  comicComments = async (id) => {
+    try {
+      return (await axios.get(`${config.API_URL}/comment/${id}`)).data;
+    } catch {
+      return null;
+    }
+  }
+  comicLikeComment = async (id) => {
+    try {
+      return (await axios.patch(`${config.API_URL}/like/${id}`)).data;
+    } catch {
+      return null;
+    }
+  }
+  comicLikeComment = async (id) => {
+    try {
+      return (await axios.patch(`${config.API_URL}/like/${id}`)).data;
+    } catch {
+      return null;
+    }
+  }
+  comicSendComment = async (data) => {
+    try {
+      return (await axios.post(`${config.API_URL}/comment`, data)).data;
+    } catch {
+      return null;
     }
   }
 };

@@ -11,6 +11,8 @@ import colorString from '../../constants/colors';
 import screenString from '../../constants/screens';
 import images from '../../assets/images';
 
+import { Linking } from 'react-native'
+
 import styles from './styles';
 
 import MaskedView from '@react-native-masked-view/masked-view';
@@ -213,21 +215,21 @@ export default function SettingScreen({ navigation }) {
             </Switch>
           </View>
         </View>
-
         <View style={{ flex: 1, marginTop: '35%', alignItems: 'center' }}>
-
-          <MaskedView
-            style={styles.maskedView}
-            maskElement={
-              <View style={styles.maskWrapper}>
-                <Text style={{ fontSize: 40, fontWeight: 600, textShadowColor: 'rgba(0, 0, 0, 0.5)', }}>TruyenXXHot.COM</Text>
-              </View>
-            }>
-            <Image
-              source={images.bgbranch}
-              style={styles.image}
-            />
-          </MaskedView>
+          <TouchableOpacity style={{ width: 350 }} onPress={() => Linking.openURL("https://truyenxxhot.com")}>
+            <MaskedView
+              style={styles.maskedView}
+              maskElement={
+                <View style={styles.maskWrapper}>
+                  <Text style={{ fontSize: 40, fontWeight: 600 }}>TruyenXXHOT.COM</Text>
+                </View>
+              }>
+              <Image
+                source={images.bgbranch}
+                style={styles.image}
+              />
+            </MaskedView>
+          </TouchableOpacity>
           <Text style={{ color: 'black', fontSize: 20, fontWeight: 500 }}>Phiên bản: 1.0.0</Text>
           {/* <Text style={{ color: 'black', fontSize: 20, fontWeight: 500 }}>Email: admin@truyenxxhot.com</Text> */}
           <Text style={{ color: 'black', fontSize: 20, fontWeight: 500 }}>Copyright © 2023 TruyenXXHot</Text>

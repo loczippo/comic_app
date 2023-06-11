@@ -11,7 +11,7 @@ export default ScaledSheet.create({
     maskedView: {
         // flex: 1,
         flexDirection: 'row',
-        height: '13%'
+        height: 50
     },
     maskWrapper: {
         backgroundColor: 'transparent',

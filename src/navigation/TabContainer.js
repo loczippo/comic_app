@@ -1,8 +1,8 @@
-import {createBottomTabNavigator} from '@react-navigation/bottom-tabs';
+import { createBottomTabNavigator } from '@react-navigation/bottom-tabs';
+import { useFocusEffect } from '@react-navigation/native';
 import * as React from 'react';
-import {StyleSheet, View, Text, TouchableOpacity} from 'react-native';
-import {useFocusEffect} from '@react-navigation/native';
-import {FollowScreen, SearchScreen, SettingScreen} from '../screens';
+import { StyleSheet, Text, View } from 'react-native';
+import { FollowScreen, SearchScreen, SettingScreen } from '../screens';
 
 import screenString from '../constants/screens';
 
@@ -10,42 +10,31 @@ import colorString from '../constants/colors';
 
 import HomeStack from './HomeStack';
 
-import FontAwesome5 from 'react-native-vector-icons/FontAwesome5';
 import Ionicons from 'react-native-vector-icons/Ionicons';
 import config from '../config';
-import {countAsyncStorage} from '../utils/storage';
+import { countAsyncStorage } from '../utils/storage';
 
-import { useSelector, useDispatch } from 'react-redux';
-import { setStorageCount } from '../redux/storageSlice';
 
 const Tab = createBottomTabNavigator();
 
 export default function TabContainer() {
 
-  const storageCount = useSelector(state => state.storage.count);
   const [length, setLength] = React.useState(0);
 
-  React.useEffect(() => {
-    countAsyncStorage(config.KEY_STORAGE).then(result => {
-      setLength(result);
-    });
-  }, [storageCount, length]);
+  useFocusEffect(
+    React.useCallback(() => {
+      countAsyncStorage(config.KEY_STORAGE).then(result => {
+        setLength(result);
+      });
 
-  // useFocusEffect(
-  //   React.useCallback(() => {
-  //     countAsyncStorage(config.KEY_STORAGE).then(result => {
-  //       setLength(result);
-  //     });
-  
-  //     return () => {
-  //       // Code cleanup (nếu cần) khi màn hình không còn được focus
-  //     };
-  //   }, [storageCount])
-  // );
+      return () => {
+        // Code cleanup (nếu cần) khi màn hình không còn được focus
+      };
+    }, [])
+  );
 
-
-  const renderBadge = (focused, label, length) => {
-    if (label === screenString.FOLLOW && length != 0) {
+  const renderBadge = (focused, label, length = 0) => {
+    if (label === screenString.FOLLOW && (length != 0)) {
       if (!focused) {
         return (
           <View style={styles.badgeContainer}>
@@ -60,45 +49,44 @@ export default function TabContainer() {
         );
       }
     }
-    return null;
   };
 
   return (
     <Tab.Navigator
       initialRouteName={screenString.HOME}
-      screenOptions={({route}) => ({
+      screenOptions={({ route }) => ({
         tabBarStyle: styles.tabBarStyle,
         tabBarActiveTintColor: 'white',
         tabBarInactiveTintColor: colorString.GRAY,
-        tabBarIcon: ({focused, color, size}) => {
+        tabBarIcon: ({ focused, color, size }) => {
           let icon;
           let label = route.name;
           if (label === screenString.HOME) {
             icon = (
               <Ionicons
                 name={focused ? 'home' : 'home-outline'}
-                style={{fontSize: size, color}}
+                style={{ fontSize: size, color }}
               />
             );
           } else if (label === screenString.FOLLOW) {
             icon = (
               <Ionicons
                 name={focused ? 'bookmarks' : 'bookmarks-outline'}
-                style={{fontSize: size, color}}
+                style={{ fontSize: size, color }}
               />
             );
           } else if (label === screenString.SEARCH) {
             icon = (
               <Ionicons
                 name={focused ? 'search' : 'search-outline'}
-                style={{fontSize: size, color}}
+                style={{ fontSize: size, color }}
               />
             );
           } else if (label === screenString.SETTINGS) {
             icon = (
               <Ionicons
                 name={focused ? 'settings' : 'settings-outline'}
-                style={{fontSize: size, color}}
+                style={{ fontSize: size, color }}
               />
             );
           }
@@ -106,7 +94,7 @@ export default function TabContainer() {
           return (
             <View style={styles.tabContainer}>
               {icon}
-              { renderBadge(focused, label, storageCount)}
+              {renderBadge(focused, label, length)}
               {focused && <Text style={styles.tabLabelText}>{label}</Text>}
             </View>
           );

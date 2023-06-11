@@ -1,5 +1,5 @@
-import React, { useState, useRef } from 'react';
-import { View, Text, Animated, Easing, PanResponder } from 'react-native';
+import React, { useRef, useState } from 'react';
+import { Animated, PanResponder, Text, View } from 'react-native';
 import { moderateScale } from 'react-native-size-matters';
 
 import styles from './styles';
