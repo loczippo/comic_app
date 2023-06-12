@@ -1,9 +1,10 @@
 // Hàm để kiểm tra và thêm đối tượng vào mảng trong AsyncStorage
 import AsyncStorage from '@react-native-async-storage/async-storage';
-export const addToAsyncStorageArray = async (key, newItem) => {
+import config from '../config';
+export const addComicToAsyncStorageArray = async (key, newItem) => {
   try {
 
-    const check = await isIssetAsyncStorageArray(key, newItem);
+    const check = await isIssetComicAsyncStorageArray(key, newItem);
     if (check) return;
 
     let newArray = [];
@@ -25,7 +26,7 @@ export const addToAsyncStorageArray = async (key, newItem) => {
   }
 };
 
-export const isIssetAsyncStorageArray = async (key, itemToCheck) => {
+export const isIssetComicAsyncStorageArray = async (key, itemToCheck) => {
   const currentArray = await AsyncStorage.getItem(key);
   let newArray = [];
 
@@ -43,7 +44,7 @@ export const isIssetAsyncStorageArray = async (key, itemToCheck) => {
   return false;
 }
 
-export const removeFromAsyncStorageArray = async (key, itemToRemove) => {
+export const removeComicFromAsyncStorageArray = async (key, itemToRemove) => {
   try {
     // Lấy mảng hiện tại từ AsyncStorage
     const currentArray = await AsyncStorage.getItem(key);
@@ -93,6 +94,56 @@ export const countAsyncStorage = async (key) => {
       return JSON.parse(currentArray).length;
     }
     return 0;
+  } catch (error) {
+    console.log(error);
+  }
+};
+
+
+export const addLanguageAsyncStorage = async (key, value) => {
+  try {
+    console.log(`switch to ${value} language`)
+    await AsyncStorage.setItem(key, value);
+  } catch (error) {
+    console.log(error);
+  }
+};
+
+export const getLanguageAsyncStorage = async (key) => {
+  try {
+    const currentLanguage = await AsyncStorage.getItem(key);
+    if(currentLanguage != null) {
+      console.log(`${currentLanguage} language selected`)
+      return await AsyncStorage.getItem(key);
+    }
+    else {
+      await AsyncStorage.getItem(key);
+      return config.DEFAULT_LANGUAGE;
+    }
+  } catch (error) {
+    console.log(error);
+  }
+};
+
+export const addModeAsyncStorage = async (key, value) => {
+  try {
+    console.log(`switch to ${value} mode`)
+    await AsyncStorage.setItem(key, value);
+  } catch (error) {
+    console.log(error);
+  }
+};
+
+export const getModeAsyncStorage = async (key, defautMode = null) => {
+  try {
+    const currentMode = await AsyncStorage.getItem(key);
+    if(currentMode != null) {
+      return currentMode;
+    }
+    else {
+      console.log(`${currentMode} mode selected`)
+      await AsyncStorage.setItem(key, defautMode);
+    }
   } catch (error) {
     console.log(error);
   }

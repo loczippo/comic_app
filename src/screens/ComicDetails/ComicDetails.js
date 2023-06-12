@@ -21,12 +21,15 @@ import styles1 from '../../components/Header/styles';
 import GlobalTag from '../../components/Tag/Tag';
 import MangaService from '../../services/MangaService';
 import styles from './styles';
-import { addToAsyncStorageArray, removeFromAsyncStorageArray, isIssetAsyncStorageArray, countAsyncStorage } from '../../utils/storage'
+import { addComicToAsyncStorageArray, removeComicFromAsyncStorageArray, isIssetComicAsyncStorageArray, countAsyncStorage } from '../../utils/storage'
 import config from '../../config';
 import { useDispatch, useSelector } from 'react-redux';
 import { setStorageCount } from '../../redux/storageSlice';
+import { useTranslation } from 'react-i18next';
 
 export default function ComicDetails({ route, navigation }) {
+
+  const {t} = useTranslation();
 
   const dispatch = useDispatch();
 
@@ -55,7 +58,7 @@ export default function ComicDetails({ route, navigation }) {
           setRefreshing(false);
         }
       });
-      isIssetAsyncStorageArray(config.KEY_STORAGE, {
+      isIssetComicAsyncStorageArray(config.COMIC_STORAGE, {
         _id: id
       }).then(result => {
         setIsFollowing(result)
@@ -88,13 +91,13 @@ export default function ComicDetails({ route, navigation }) {
   }
 
   const onFollowPressed = () => {
-    ToastAndroid.show(isFollowing ? "Đã bỏ theo dõi truyện" : "Đã thêm vào danh sách theo dõi", ToastAndroid.SHORT);
+    ToastAndroid.show(isFollowing ? t("removeToFollowList") : t("addToFollowList"), ToastAndroid.SHORT);
     if (!isFollowing) {
-      addToAsyncStorageArray(config.KEY_STORAGE, { _id: id });
+      addComicToAsyncStorageArray(config.COMIC_STORAGE, { _id: id });
     } else {
-      removeFromAsyncStorageArray(config.KEY_STORAGE, { _id: id });
+      removeComicFromAsyncStorageArray(config.COMIC_STORAGE, { _id: id });
     }
-    countAsyncStorage(config.KEY_STORAGE).then(result => {
+    countAsyncStorage(config.COMIC_STORAGE).then(result => {
       dispatch(setStorageCount(result));
     })
     setIsFollowing(previousState => !previousState)
@@ -174,7 +177,7 @@ export default function ComicDetails({ route, navigation }) {
               {/* views */}
               <View style={styles.views_container}>
                 <SimpleLineIcons name="eye" style={styles.eyeIcon} />
-                <Text style={styles.views}>{info.viewcounts} lượt xem</Text>
+                <Text style={styles.views}>{info.viewcounts} {t("views")}</Text>
               </View>
               {/* likes */}
               <View style={styles.likes}>
@@ -235,7 +238,7 @@ export default function ComicDetails({ route, navigation }) {
                     onPress={sortChapter}
                   />
                 </Text>
-                <Text style={styles.headerItem_capNhat}>Cập nhật</Text>
+                <Text style={styles.headerItem_capNhat}>{t("update_1")}</Text>
               </View>
 
               <FlatList
@@ -254,7 +257,7 @@ export default function ComicDetails({ route, navigation }) {
           style={styles.buttonFollow}
           type="outlinePrimary"
           onPress={onFollowPressed}>
-          <Text>{isFollowing ? "Bỏ theo dõi" : "Theo dõi"}</Text>
+          <Text>{isFollowing ? t("unFollow") : t("follow")}</Text>
         </GlobalButton>
       </View>
     </GlobalContainer>

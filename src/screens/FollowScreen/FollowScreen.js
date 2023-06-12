@@ -11,8 +11,11 @@ import config from '../../config';
 import colorString from '../../constants/colors';
 import screens from '../../constants/screens';
 import { getAsyncStorage } from '../../utils/storage';
+import { useTranslation } from 'react-i18next';
 
 export default function FollowScreen({ navigation }) {
+
+  const { t } = useTranslation();
   const [refreshing, setRefreshing] = React.useState(false);
   const [isLoading, setIsLoading] = React.useState(true);
   const [currentPage, setCurrentPage] = React.useState(0);
@@ -27,9 +30,9 @@ export default function FollowScreen({ navigation }) {
 
   useFocusEffect(
     React.useCallback(() => {
-      getAsyncStorage(config.KEY_STORAGE).then(storageResult => {
+      getAsyncStorage(config.COMIC_STORAGE).then(storageResult => {
 
-        if(!storageResult) return;
+        if (!storageResult) return;
 
         Promise.all(storageResult.map(storageItem => {
           return MangaService.comicInfo(storageItem._id).then(result => {
@@ -41,7 +44,7 @@ export default function FollowScreen({ navigation }) {
         });
       });
       setIsLoading(false);
-  
+
       return () => {
         // Code cleanup (nếu cần) khi màn hình không còn được focus
       };
@@ -67,12 +70,12 @@ export default function FollowScreen({ navigation }) {
     <GlobalContainer>
       <GlobalHeader
         navigation={navigation}
-        children={<Text style={styles.title_header}>{screens.FOLLOW}</Text>}
+        children={<Text style={styles.title_header}>{t("follow")}</Text>}
       />
       <View style={{ flex: 1 }}>
         {isLoading ? (
           <ActivityIndicator />
-        ) : data.length == 0 ? <Text style={{margin: 10, textAlign: 'center', color: 'gray', fontSize: 16}}>Danh sách truyện theo dõi trống</Text> : (
+        ) : data.length == 0 ? <Text style={{ margin: 10, textAlign: 'center', color: 'gray', fontSize: 16 }}>{t("comicListIsEmpty")}</Text> : (
           <FlatList
             initialNumToRender={5}
             horizontal={false}

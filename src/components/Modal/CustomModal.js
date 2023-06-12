@@ -11,6 +11,7 @@ import FontAwesome from 'react-native-vector-icons/FontAwesome';
 import colors from '../../constants/colors';
 import MaskedView from '@react-native-masked-view/masked-view';
 import images from '../../assets/images';
+import {useFocusEffect} from '@react-navigation/native';
 
 export const CustomModal = (props) => {
     const { modalVisible, setModalVisible, comicId } = props;
@@ -41,17 +42,35 @@ export const CustomModal = (props) => {
 
     const [reloadComment, setReloadComment] = React.useState(false);
 
-    React.useEffect(() => {
-        const getComment = async () => {
-            const data = await MangaService.comicComments(comicId);
-            if (data) {
-                setComments(data.reverse())
+    // React.useEffect(() => {
+    //     const getComment = async () => {
+    //         const data = await MangaService.comicComments(comicId);
+    //         if (data) {
+    //             setComments(data.reverse())
+    //         }
+    //     }
+
+    //     getComment();
+
+    // }, [reloadComment])
+
+
+    useFocusEffect(
+        React.useCallback(() => {
+            const getComment = async () => {
+                const data = await MangaService.comicComments(comicId);
+                if (data) {
+                    setComments(data.reverse())
+                }
             }
-        }
-
-        getComment();
-
-    }, [reloadComment])
+    
+            getComment()
+    
+          return () => {
+            // Code cleanup (nếu cần) khi màn hình không còn được focus
+          };
+        }, [reloadComment]),
+      );
 
     let [commentText, setCommentText] = React.useState('');
 

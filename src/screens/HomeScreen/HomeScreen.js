@@ -19,11 +19,12 @@ import MangaFlatList from './ComicFlatList';
 import styles from './styles';
 import NetInfo from "@react-native-community/netinfo";
 import Banner from '../../components/Banner/Banner';
+import { useTranslation } from 'react-i18next';
 
 export default function HomeScreen({ navigation }) {
   const [refreshing, setRefreshing] = React.useState(false);
   const [isLoading, setIsLoading] = React.useState(true);
-
+  const {t, i18n} = useTranslation();
   const [isConnected, setIsConnected] = React.useState(false);
 
   useEffect(() => {
@@ -115,7 +116,7 @@ export default function HomeScreen({ navigation }) {
                   fontWeight: 600,
                   fontSize: 16,
                 }}>
-                Xếp hạng
+                {t('ranking')}
               </Text>
             </View>
           </TouchableOpacity>
@@ -133,7 +134,7 @@ export default function HomeScreen({ navigation }) {
                   fontWeight: 600,
                   fontSize: 16,
                 }}>
-                Thể loại
+                {t('category')}
               </Text>
             </View>
           </TouchableOpacity>
@@ -151,7 +152,7 @@ export default function HomeScreen({ navigation }) {
                   fontWeight: 600,
                   fontSize: 16,
                 }}>
-                Mới cập nhật
+                {t('newUpdates')}
               </Text>
             </View>
           </TouchableOpacity>
@@ -159,7 +160,7 @@ export default function HomeScreen({ navigation }) {
         <View style={[styles.listManagaContainer, { backgroundColor: 'white' }]}>
           <View style={styles.listTruyenConGaiThichContainer}>
             {/* title */}
-            <Text style={styles.title_truyenConGaiThich}>TRUYỆN MỚI CẬP NHẬT</Text>
+            <Text style={styles.title_truyenConGaiThich}>{t("comicNewUpdates")}</Text>
 
             {/* list */}
             <View

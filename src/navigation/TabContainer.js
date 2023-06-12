@@ -13,17 +13,20 @@ import HomeStack from './HomeStack';
 import Ionicons from 'react-native-vector-icons/Ionicons';
 import config from '../config';
 import { countAsyncStorage } from '../utils/storage';
+import { useTranslation } from 'react-i18next';
 
 
 const Tab = createBottomTabNavigator();
 
 export default function TabContainer() {
 
+  const {t, i18n} = useTranslation();
+
   const [length, setLength] = React.useState(0);
 
   useFocusEffect(
     React.useCallback(() => {
-      countAsyncStorage(config.KEY_STORAGE).then(result => {
+      countAsyncStorage(config.COMIC_STORAGE).then(result => {
         setLength(result);
       });
 
@@ -34,7 +37,7 @@ export default function TabContainer() {
   );
 
   const renderBadge = (focused, label, length = 0) => {
-    if (label === screenString.FOLLOW && (length != 0)) {
+    if (label === t("follow") && (length != 0)) {
       if (!focused) {
         return (
           <View style={styles.badgeContainer}>
@@ -68,6 +71,7 @@ export default function TabContainer() {
                 style={{ fontSize: size, color }}
               />
             );
+            label = t('home')
           } else if (label === screenString.FOLLOW) {
             icon = (
               <Ionicons
@@ -75,6 +79,7 @@ export default function TabContainer() {
                 style={{ fontSize: size, color }}
               />
             );
+            label = t('follow')
           } else if (label === screenString.SEARCH) {
             icon = (
               <Ionicons
@@ -82,6 +87,7 @@ export default function TabContainer() {
                 style={{ fontSize: size, color }}
               />
             );
+            label = t('search')
           } else if (label === screenString.SETTINGS) {
             icon = (
               <Ionicons
@@ -89,6 +95,7 @@ export default function TabContainer() {
                 style={{ fontSize: size, color }}
               />
             );
+            label = t('settings')
           }
 
           return (

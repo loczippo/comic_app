@@ -9,8 +9,11 @@ import { ComicItem } from '../HomeScreen/ComicItem';
 import MangaService from '../../services/MangaService';
 
 import colorString from '../../constants/colors';
+import { useTranslation } from 'react-i18next';
 
 export default function ComicNewUpdate({ navigation }) {
+
+  const {t} = useTranslation();
   const [refreshing, setRefreshing] = React.useState(false);
   const [isLoading, setIsLoading] = React.useState(true);
 
@@ -26,7 +29,7 @@ export default function ComicNewUpdate({ navigation }) {
 
   const onRefresh = React.useCallback(() => {
     setTimeout(() => {
-      ToastAndroid.show('Đang làm mới truyện', ToastAndroid.SHORT);
+      ToastAndroid.show(t("comicRefresh"), ToastAndroid.SHORT);
       MangaService.latestUpdateComic(currentPage + 1, 15).then(result => {
           setCurrentPage(0)
           setData(result);
@@ -99,7 +102,7 @@ export default function ComicNewUpdate({ navigation }) {
         showLeftButton={true}
         showRightButton={false}
         children={
-          <Text style={styles.title_header}>{'Truyện mới cập nhật'}</Text>
+          <Text style={styles.title_header}>{t("comicNewUpdates")}</Text>
         }
       />
       <View style={{ flex: 1 }}>

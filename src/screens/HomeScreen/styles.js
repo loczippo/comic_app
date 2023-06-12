@@ -96,6 +96,7 @@ export default styles = ScaledSheet.create({
     color: Colors.Colors.primary,
     fontWeight: 'bold',
     paddingHorizontal: Sizes.Sizes.s2,
+    textTransform: 'uppercase'
   },
 
   truyenContainer: {
