@@ -14,10 +14,11 @@ export default ScaledSheet.create({
     },
 
     title_header: {
-        fontSize: FontSizes.FontSizes.p,
+        // fontSize: FontSizes.FontSizes.p,
         color: Colors.Colors.info,
         textAlign: 'center',
     },
+    
 
     truyen_container: {
         flexDirection: 'row',

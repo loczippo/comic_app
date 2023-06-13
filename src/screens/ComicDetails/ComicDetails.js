@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from 'react';
+import React, {useEffect, useState} from 'react';
 import {
   FlatList,
   Image,
@@ -21,19 +21,35 @@ import styles1 from '../../components/Header/styles';
 import GlobalTag from '../../components/Tag/Tag';
 import MangaService from '../../services/MangaService';
 import styles from './styles';
-import { addComicToAsyncStorageArray, removeComicFromAsyncStorageArray, isIssetComicAsyncStorageArray, countAsyncStorage } from '../../utils/storage'
+import {
+  addComicToAsyncStorageArray,
+  removeComicFromAsyncStorageArray,
+  isIssetComicAsyncStorageArray,
+  countAsyncStorage,
+} from '../../utils/storage';
 import config from '../../config';
-import { useDispatch, useSelector } from 'react-redux';
-import { setStorageCount } from '../../redux/storageSlice';
-import { useTranslation } from 'react-i18next';
+import {useDispatch, useSelector} from 'react-redux';
+import {setStorageCount} from '../../redux/storageSlice';
+import {useTranslation} from 'react-i18next';
 
-export default function ComicDetails({ route, navigation }) {
+function handleWatingName(name) {
+  const {t} = useTranslation();
+  if (typeof name === 'string') {
+    name = name.toLowerCase();
+    if (name == 'đang cập nhật') {
+      return t('updating');
+    } else {
+      return name.charAt(0).toUpperCase() + name.slice(1);;
+    }
+  }
+}
 
+export default function ComicDetails({route, navigation}) {
   const {t} = useTranslation();
 
   const dispatch = useDispatch();
 
-  const { name, id } = route.params;
+  const {name, id} = route.params;
 
   const [contentActive, setContentActive] = useState(false);
 
@@ -47,7 +63,7 @@ export default function ComicDetails({ route, navigation }) {
     setRefreshing(true);
     setTimeout(() => {
       setRefreshing(false);
-    }, 1000)
+    }, 1000);
   }, []);
 
   useEffect(() => {
@@ -59,64 +75,88 @@ export default function ComicDetails({ route, navigation }) {
         }
       });
       isIssetComicAsyncStorageArray(config.COMIC_STORAGE, {
-        _id: id
+        _id: id,
       }).then(result => {
-        setIsFollowing(result)
-      })
+        setIsFollowing(result);
+      });
     }
   }, [refreshing]);
 
-  const [sortIcon, setSortIcon] = useState("sort")
+  const [sortIcon, setSortIcon] = useState('sort');
 
   const sortChapter = () => {
+    let icon =
+      sortIcon == 'sort-amount-down-alt'
+        ? 'sort-amount-up-alt'
+        : 'sort-amount-down-alt';
 
-    let icon = sortIcon == "sort-amount-down-alt" ? "sort-amount-up-alt" : "sort-amount-down-alt"
+    setSortIcon(icon);
 
-    setSortIcon(icon)
-
-    const tempInfo = { ...info }; // Tạo bản sao của đối tượng info
+    const tempInfo = {...info}; // Tạo bản sao của đối tượng info
     tempInfo.listChapter = tempInfo.listChapter.reverse(); // Giá trị mới cho listChapter
 
     setInfo(tempInfo);
     // tempInfo.listChapter.reverse();
     // setInfo(tempInfo)
-  }
+  };
 
-  let type2 = info.suggest_type || ";";
-  
+  let type2 = info.suggest_type || ';';
+
   const onChapterPressed = (index, id, name, length) => {
     navigation.navigate(screenString.COMIC_READER, {
-      index, id, name, length
-    })
-  }
+      index,
+      id,
+      name,
+      length,
+    });
+  };
 
   const onFollowPressed = () => {
-    ToastAndroid.show(isFollowing ? t("removeToFollowList") : t("addToFollowList"), ToastAndroid.SHORT);
+    ToastAndroid.show(
+      isFollowing ? t('removeToFollowList') : t('addToFollowList'),
+      ToastAndroid.SHORT,
+    );
     if (!isFollowing) {
-      addComicToAsyncStorageArray(config.COMIC_STORAGE, { _id: id });
+      addComicToAsyncStorageArray(config.COMIC_STORAGE, {_id: id});
     } else {
-      removeComicFromAsyncStorageArray(config.COMIC_STORAGE, { _id: id });
+      removeComicFromAsyncStorageArray(config.COMIC_STORAGE, {_id: id});
     }
     countAsyncStorage(config.COMIC_STORAGE).then(result => {
       dispatch(setStorageCount(result));
-    })
-    setIsFollowing(previousState => !previousState)
-  }
+    });
+    setIsFollowing(previousState => !previousState);
+  };
 
-  const renderItemChapter = ({ item: chapter }) => {
+  const renderItemChapter = ({item: chapter}) => {
+    let data = chapter.updatedAt.split(' ');
+    if (data[1] == 'phút') {
+      data = data[0] + ` ${t('minsAgo')}`;
+    } else if (data[1] == 'ngày') {
+      data = data[0] + ` ${t('daysAgo')}`;
+    } else if (data[1] == 'giờ') {
+      data = data[0] + ` ${t('hoursAgo')} `;
+    }
+
     return (
       <TouchableHighlight
         underlayColor="#E1DCDC"
-        onPress={() => onChapterPressed(chapter.index, info._id, info.name, info.listChapter.length)}>
+        onPress={() =>
+          onChapterPressed(
+            chapter.index,
+            info._id,
+            info.name,
+            info.listChapter.length,
+          )
+        }>
         <View style={styles.rowItemChapter}>
           <Text style={styles.item_soChuong}>{chapter.name}</Text>
-          <Text style={styles.item_capNhat}>{chapter.updatedAt}</Text>
+          <Text style={styles.item_capNhat}>{data}</Text>
         </View>
       </TouchableHighlight>
     );
   };
 
-  const mangaKeyExtractor = (chapter) => {
+  const mangaKeyExtractor = chapter => {
     return chapter.name;
   };
 
@@ -132,7 +172,6 @@ export default function ComicDetails({ route, navigation }) {
   };
 
   return (
-
     <GlobalContainer>
       {/* header */}
       <GlobalHeader
@@ -140,7 +179,7 @@ export default function ComicDetails({ route, navigation }) {
         comicId={id}
         showLeftButton={true}
         showRightButton={true}
-        children={<Text style={styles1.title_header}>{name}</Text>}
+        children={<Text style={styles.title_header}>{name}</Text>}
       />
       <View style={styles.container}>
         {/* tom tat truyen  */}
@@ -148,9 +187,13 @@ export default function ComicDetails({ route, navigation }) {
           {/* thumbnai */}
           <Image
             style={styles.thumbnai}
-            source={info.image ? {
-              uri: info.image,
-            } : Images.loading}
+            source={
+              info.image
+                ? {
+                    uri: info.image,
+                  }
+                : Images.loading
+            }
           />
 
           {/* info */}
@@ -160,24 +203,30 @@ export default function ComicDetails({ route, navigation }) {
 
             {/* Ten khác */}
             <Text style={styles.otherMangaName}>
-              Tên khác: {info.other_name}
+              {t('comicOtherName')} {handleWatingName(info.other_name)}
             </Text>
 
             {/* Ten tac gia */}
-            <Text style={styles.autherName}>Tên tác giả: {info.author}</Text>
+            <Text style={styles.autherName}>
+              {t('comicAuthor')} {handleWatingName(info.author)}
+            </Text>
 
             {/* Trang thai */}
-            <Text style={styles.status}>Trạng thái: {info.status}</Text>
+            <Text style={styles.status}>
+              {t('comicStatus')} {handleWatingName(info.status)}
+            </Text>
 
             {/* tag the loai truyen */}
-            <GlobalTag data={type2.split(";")} />
+            <GlobalTag data={type2.split(';')} />
 
             {/* Luot doc, thich */}
             <View style={styles.viewLike_container}>
               {/* views */}
               <View style={styles.views_container}>
                 <SimpleLineIcons name="eye" style={styles.eyeIcon} />
-                <Text style={styles.views}>{info.viewcounts} {t("views")}</Text>
+                <Text style={styles.views}>
+                  {info.viewcounts} {t('views')}
+                </Text>
               </View>
               {/* likes */}
               <View style={styles.likes}>
@@ -195,15 +244,20 @@ export default function ComicDetails({ route, navigation }) {
             onPress={() => activeContent('content')}>
             <View>
               <Text
-                style={
-                  contentActive ? styles.contentActive : styles.contentNotActive
-                }>
-                INTRODUCE
+                style={[
+                  contentActive
+                    ? styles.contentActive
+                    : styles.contentNotActive,
+                  {
+                    textTransform: 'uppercase',
+                  },
+                ]}>
+                {t('introduce')}
               </Text>
             </View>
           </TouchableOpacity>
 
-          <View style={{ width: 1, backgroundColor: 'gray' }} />
+          <View style={{width: 1, backgroundColor: 'gray'}} />
 
           <TouchableOpacity
             style={styles.menuTabItem}
@@ -219,26 +273,38 @@ export default function ComicDetails({ route, navigation }) {
           </TouchableOpacity>
         </View>
 
-        <View style={{ flex: 1 }}>
+        <View style={{flex: 1}}>
           {contentActive ? (
             <View>
               <View style={styles.tomTatTruyen_button}>
-                <Text style={{ marginVertical: 5, color: 'black' }}>Mô tả</Text>
+                <Text style={{marginVertical: 5, color: 'black'}}>
+                  {t('description')}
+                </Text>
                 <Icon name="info" style={styles.iconContent} />
               </View>
               <View style={styles.tomTatTruyen_container}>
-                <Text style={{ color: 'red' }}>{info.description == "Đang Cập Nhật" ? <>Truyện <Text style={{ color: 'green' }}>{info.name}</Text> chưa có mô tả</> : info.description}</Text>
+                <Text style={{color: 'red'}}>
+                  {info.description == 'Đang Cập Nhật' ? (
+                    <>
+                      Truyện <Text style={{color: 'green'}}>{info.name}</Text>{' '}
+                      chưa có mô tả
+                    </>
+                  ) : (
+                    info.description
+                  )}
+                </Text>
               </View>
             </View>
           ) : (
             <View style={styles.tabListChapterContainer}>
               <View style={styles.headerItemChapter}>
-                <Text style={[styles.headerItem_soChuong]} onPress={sortChapter}>Danh sách chương {" "}
-                  <FontAwesome5 name={sortIcon}
-                    onPress={sortChapter}
-                  />
+                <Text
+                  style={[styles.headerItem_soChuong]}
+                  onPress={sortChapter}>
+                  {t('chapterList')}{' '}
+                  <FontAwesome5 name={sortIcon} onPress={sortChapter} />
                 </Text>
-                <Text style={styles.headerItem_capNhat}>{t("update_1")}</Text>
+                <Text style={styles.headerItem_capNhat}>{t('update_1')}</Text>
               </View>
 
               <FlatList
@@ -257,7 +323,7 @@ export default function ComicDetails({ route, navigation }) {
           style={styles.buttonFollow}
           type="outlinePrimary"
           onPress={onFollowPressed}>
-          <Text>{isFollowing ? t("unFollow") : t("follow")}</Text>
+          <Text>{isFollowing ? t('unFollow') : t('follow')}</Text>
         </GlobalButton>
       </View>
     </GlobalContainer>

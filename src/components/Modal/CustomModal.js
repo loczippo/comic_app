@@ -12,8 +12,10 @@ import colors from '../../constants/colors';
 import MaskedView from '@react-native-masked-view/masked-view';
 import images from '../../assets/images';
 import {useFocusEffect} from '@react-navigation/native';
+import { useTranslation } from 'react-i18next';
 
 export const CustomModal = (props) => {
+    const {t} = useTranslation();
     const { modalVisible, setModalVisible, comicId } = props;
     const modalOpacity = React.useRef(new Animated.Value(0)).current;
     const showAnimation = () => {
@@ -174,10 +176,10 @@ export const CustomModal = (props) => {
                     }}
                 >
                     <Text style={{ textAlign: 'center', fontSize: 24, marginTop: 10, color: 'black', fontWeight: '500' }}>
-                        Bình luận
+                        {t("comment")}
                     </Text>
                     <ScrollView>
-                        {comments.length == 0 ? <Text style={{ color: 'gray', textAlign: 'center', margin: 40 }}>Không tìm thấy bình luận nào</Text> : null}
+                        {comments.length == 0 ? <Text style={{ color: 'gray', textAlign: 'center', margin: 40 }}>{t("commentIsEmpty")}</Text> : null}
                         {
                             comments.map(item => {
                                 let digitsOnly = item._id.replace(/\D/g, "");
@@ -237,7 +239,7 @@ export const CustomModal = (props) => {
                         <TextInput
                             editable
                             multiline
-                            placeholder='Bình luận....'
+                            placeholder={t("comment") + "....."}
                             placeholderTextColor="gray"
                             onChangeText={(value) => onChangeComment(value)}
                             value={commentText}

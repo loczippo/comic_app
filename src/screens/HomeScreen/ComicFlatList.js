@@ -7,9 +7,23 @@ import screenString from '../../constants/screens';
 import SimpleLineIcons from 'react-native-vector-icons/SimpleLineIcons';
 
 import { ComicItem } from './ComicItem';
+import { useTranslation } from 'react-i18next';
 
+function ourTime(ourTime) {
+  const {t} = useTranslation();
+  const data = ourTime.split(" ");
+  if(data[1] == "phút") {
+      return data[0] + ` ${t("minsAgo")}`
+  } else if(data[1] == "ngày") {
+      return data[0] + ` ${t("daysAgo")}`
+  } else if(data[1] == "giờ") {
+      return data[0] + ` ${t("hoursAgo")} `
+  }
+}
 
 const PlaceholderComponent = () => {
+
+  const {t} = useTranslation()
   const opacityAnimation = useRef(new Animated.Value(0)).current;
   const startPulseAnimation = () => {
     Animated.sequence([
@@ -63,7 +77,7 @@ const PlaceholderComponent = () => {
               paddingLeft: 3,
               paddingRight: 3,
             }}>
-            {"10 giờ trước"}
+            {ourTime("10 giờ trước")}
           </Text>
           <Animated.View style={{ opacity: opacityAnimation }}>
             <Text
@@ -88,7 +102,7 @@ const PlaceholderComponent = () => {
           style={styles.manga_name}
           numberOfLines={1}
           ellipsizeMode="tail">
-          {"Đang tải..."}
+          {t("loading")}
         </Text>
       </View>
 
@@ -120,7 +134,7 @@ const PlaceholderComponent = () => {
               paddingLeft: 3,
               paddingRight: 3,
             }}>
-            {"10 giờ trước"}
+            {ourTime("10 giờ trước")}
           </Text>
           <Animated.View style={{ opacity: opacityAnimation }}>
             <Text
@@ -145,7 +159,7 @@ const PlaceholderComponent = () => {
           style={styles.manga_name}
           numberOfLines={1}
           ellipsizeMode="tail">
-          {"Đang tải..."}
+          {t("loading")}
         </Text>
       </View>
     </>

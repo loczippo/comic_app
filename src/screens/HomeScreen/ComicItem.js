@@ -8,6 +8,18 @@ import images from '../../assets/images';
 import GlobalTag from '../../components/Tag/Tag';
 import { useTranslation } from 'react-i18next';
 
+function ourTime(ourTime) {
+  const {t} = useTranslation();
+  const data = ourTime.split(" ");
+  if(data[1] == "phút") {
+      return data[0] + ` ${t("minsAgo")}`
+  } else if(data[1] == "ngày") {
+      return data[0] + ` ${t("daysAgo")}`
+  } else if(data[1] == "giờ") {
+      return data[0] + ` ${t("hoursAgo")} `
+  }
+}
+
 export const ComicItem = ({ item, direction, navigation, isLoading }) => {
   const { t, i18n } = useTranslation();
 
@@ -82,7 +94,7 @@ export const ComicItem = ({ item, direction, navigation, isLoading }) => {
             </Text>
             <View style={[{ flexDirection: 'row' }, { marginLeft: 40 }]}>
               {/* Time */}
-              <Text style={styles.subText}>{t("update")} {item.ourTime}</Text>
+              <Text style={styles.subText}>{t("update")} {ourTime(item.ourTime)}</Text>
               {/* View */}
               <Text style={styles.subText}>{item.viewcounts} {t("views")}</Text>
             </View>
@@ -128,7 +140,7 @@ export const ComicItem = ({ item, direction, navigation, isLoading }) => {
                 paddingLeft: 3,
                 paddingRight: 3,
               }}>
-              {item.ourTime}
+              {ourTime(item.ourTime)}
             </Text>
             <Animated.View style={{ opacity: opacityAnimation }}>
               <Text

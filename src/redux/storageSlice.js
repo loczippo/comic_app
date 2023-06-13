@@ -1,4 +1,4 @@
-import { createSlice } from '@reduxjs/toolkit';
+import {createSlice} from '@reduxjs/toolkit';
 
 const storageSlice = createSlice({
   name: 'storage',
@@ -12,5 +12,5 @@ const storageSlice = createSlice({
   },
 });
 
-export const { setStorageCount } = storageSlice.actions;
+export const {setStorageCount} = storageSlice.actions;
 export default storageSlice.reducer;

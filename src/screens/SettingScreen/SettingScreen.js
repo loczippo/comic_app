@@ -24,8 +24,15 @@ import {Linking} from 'react-native';
 import styles from './styles';
 
 import MaskedView from '@react-native-masked-view/masked-view';
-import { addLanguageAsyncStorage, addModeAsyncStorage, getLanguageAsyncStorage, getModeAsyncStorage } from '../../utils/storage';
+import {
+  addLanguageAsyncStorage,
+  addModeAsyncStorage,
+  getLanguageAsyncStorage,
+  getModeAsyncStorage,
+} from '../../utils/storage';
 import config from '../../config';
+import {useDispatch} from 'react-redux';
+import {setMode} from '../../redux/modeSlice';
 
 export default function SettingScreen({navigation}) {
   const selectRef = React.useRef(null);
@@ -37,19 +44,18 @@ export default function SettingScreen({navigation}) {
   ];
 
   const [languageName, setLanguageName] = React.useState('');
-  
+
   React.useEffect(() => {
-    if(i18n.language == config.DEFAULT_LANGUAGE) {
-      setLanguageName(t('vietnamese'))
-      handleSelectIndex(0)
+    if (i18n.language == config.DEFAULT_LANGUAGE) {
+      setLanguageName(t('vietnamese'));
+      handleSelectIndex(0);
     } else {
-      setLanguageName(t('english'))
-      handleSelectIndex(1)
+      setLanguageName(t('english'));
+      handleSelectIndex(1);
     }
-  }, [])
+  }, []);
 
-
-  const handleSelectIndex = (index) => {
+  const handleSelectIndex = index => {
     if (selectRef.current) {
       selectRef.current.selectIndex(index);
     }
@@ -62,35 +68,37 @@ export default function SettingScreen({navigation}) {
   const handleLanguageSelect = (selectedItem, index) => {
     const languageCode = index === 0 ? 'vi' : 'en';
     changeLanguage(languageCode);
-    if(languageCode == "vi") {
-      setLanguageName(t('vietnamese'))
+    if (languageCode == 'vi') {
+      setLanguageName(t('vietnamese'));
     } else {
-      setLanguageName(t('english'))
+      setLanguageName(t('english'));
     }
-    addLanguageAsyncStorage(config.LANGUAGE_STORAGE, languageCode)
+    addLanguageAsyncStorage(config.LANGUAGE_STORAGE, languageCode);
   };
 
   const [isEnabledDarkMode, setIsEnabledDarkMode] = React.useState(false);
 
+  const dispatch = useDispatch();
+
   React.useEffect(() => {
     getModeAsyncStorage(config.MODE_STORAGE).then(mode => {
-      if(mode === "dark") {
-        setIsEnabledDarkMode(true)
+      if (mode === 'dark') {
+        setIsEnabledDarkMode(true);
+        dispatch(setMode('dark'));
       } else {
-        setIsEnabledDarkMode(false)
+        setIsEnabledDarkMode(false);
+        dispatch(setMode('light'));
       }
-    })
-  }, [])
+    });
+  }, []);
 
   const [isEnabledAds, setIsEnabledAds] = React.useState(true);
   const toggleDarkModeSwitch = () => {
     setIsEnabledDarkMode(previousState => !previousState);
 
-    const mode = !isEnabledDarkMode ? "dark" : "light";
-    addModeAsyncStorage(config.MODE_STORAGE, mode)
+    const mode = !isEnabledDarkMode ? 'dark' : 'light';
+    addModeAsyncStorage(config.MODE_STORAGE, mode);
   };
-
-
 
   const toggleAdsSwitch = () => {
     setIsEnabledAds(previousState => !previousState);
@@ -103,11 +111,13 @@ export default function SettingScreen({navigation}) {
         navigation={navigation}
         showLeftButton={false}
         showRightButton={false}
-        children={
-          <Text style={styles.title_header}>{t('settings')}</Text>
-        }
+        children={<Text style={styles.title_header}>{t('settings')}</Text>}
       />
-      <View style={{backgroundColor: isEnabledDarkMode ? '#191919' : colorString.GRAY, height: '100%'}}>
+      <View
+        style={{
+          backgroundColor: isEnabledDarkMode ? '#191919' : colorString.GRAY,
+          height: '100%',
+        }}>
         <View
           style={{
             display: 'flex',
@@ -116,7 +126,13 @@ export default function SettingScreen({navigation}) {
             marginLeft: 15,
             marginTop: 15,
           }}>
-          <Ionicons name="language" style={{color: isEnabledDarkMode ? colorString.Colors.lightGray : 'black', fontSize: 24}} />
+          <Ionicons
+            name="language"
+            style={{
+              color: isEnabledDarkMode ? colorString.Colors.lightGray : 'black',
+              fontSize: 24,
+            }}
+          />
           <View
             style={{
               display: 'flex',
@@ -126,8 +142,15 @@ export default function SettingScreen({navigation}) {
               marginLeft: 10,
               width: '82%',
             }}>
-            <Text style={{color: isEnabledDarkMode ? colorString.Colors.lightGray : 'black', fontSize: 18, fontWeight: 500}}>
-            {t('language')}
+            <Text
+              style={{
+                color: isEnabledDarkMode
+                  ? colorString.Colors.lightGray
+                  : 'black',
+                fontSize: 18,
+                fontWeight: 500,
+              }}>
+              {t('language')}
             </Text>
             <SelectDropdown
               ref={selectRef}
@@ -184,7 +207,10 @@ export default function SettingScreen({navigation}) {
           }}>
           <MaterialCommunityIcons
             name="google-ads"
-            style={{color: isEnabledDarkMode ? colorString.Colors.lightGray : 'black', fontSize: 24}}
+            style={{
+              color: isEnabledDarkMode ? colorString.Colors.lightGray : 'black',
+              fontSize: 24,
+            }}
           />
           <View
             style={{
@@ -195,8 +221,15 @@ export default function SettingScreen({navigation}) {
               marginLeft: 10,
               width: '45%',
             }}>
-            <Text style={{color: isEnabledDarkMode ? colorString.Colors.lightGray : 'black', fontSize: 18, fontWeight: 500}}>
-            {t('ads')}
+            <Text
+              style={{
+                color: isEnabledDarkMode
+                  ? colorString.Colors.lightGray
+                  : 'black',
+                fontSize: 18,
+                fontWeight: 500,
+              }}>
+              {t('ads')}
             </Text>
             <Switch
               style={{transform: [{scaleX: 1.5}, {scaleY: 1.5}]}}
@@ -217,7 +250,10 @@ export default function SettingScreen({navigation}) {
           }}>
           <MaterialCommunityIcons
             name="theme-light-dark"
-            style={{color: isEnabledDarkMode ? colorString.Colors.lightGray : 'black', fontSize: 24}}
+            style={{
+              color: isEnabledDarkMode ? colorString.Colors.lightGray : 'black',
+              fontSize: 24,
+            }}
           />
           <View
             style={{
@@ -228,12 +264,24 @@ export default function SettingScreen({navigation}) {
               marginLeft: 10,
               width: '45%',
             }}>
-            <Text style={{color: isEnabledDarkMode ? colorString.Colors.lightGray : 'black', fontSize: 18, fontWeight: 500}}>
-            {t('darkMode')}
+            <Text
+              style={{
+                color: isEnabledDarkMode
+                  ? colorString.Colors.lightGray
+                  : 'black',
+                fontSize: 18,
+                fontWeight: 500,
+              }}>
+              {t('darkMode')}
             </Text>
             <Switch
               style={{transform: [{scaleX: 1.5}, {scaleY: 1.5}]}}
-              trackColor={{false: 'gray', true: isEnabledDarkMode ? colorString.Colors.lightGray : 'black'}}
+              trackColor={{
+                false: 'gray',
+                true: isEnabledDarkMode
+                  ? colorString.Colors.lightGray
+                  : 'black',
+              }}
               thumbColor={'white'}
               onValueChange={toggleDarkModeSwitch}
               value={isEnabledDarkMode}></Switch>
@@ -255,11 +303,21 @@ export default function SettingScreen({navigation}) {
               <Image source={images.bgbranch} style={styles.image} />
             </MaskedView>
           </TouchableOpacity>
-          <Text style={{color: isEnabledDarkMode ? colorString.Colors.lightGray : 'black', fontSize: 20, fontWeight: 500}}>
+          <Text
+            style={{
+              color: isEnabledDarkMode ? colorString.Colors.lightGray : 'black',
+              fontSize: 20,
+              fontWeight: 500,
+            }}>
             {t('version')} 1.0.0
           </Text>
           {/* <Text style={{ color: isEnabledDarkMode ? colorString.Colors.lightGray : 'black', fontSize: 20, fontWeight: 500 }}>Email: admin@truyenxxhot.com</Text> */}
-          <Text style={{color: isEnabledDarkMode ? colorString.Colors.lightGray : 'black', fontSize: 20, fontWeight: 500}}>
+          <Text
+            style={{
+              color: isEnabledDarkMode ? colorString.Colors.lightGray : 'black',
+              fontSize: 20,
+              fontWeight: 500,
+            }}>
             Copyright © 2023 TruyenXXHot
           </Text>
         </View>

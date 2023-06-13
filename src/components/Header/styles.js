@@ -15,7 +15,9 @@ export default ScaledSheet.create({
         textAlign: 'center',
     },
 
-    
+    dark: {
+        backgroundColor: '#606A80'
+    },
 
     container: {
         width: '100%',
