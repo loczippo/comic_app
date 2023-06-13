@@ -8,7 +8,6 @@ import Colors from '../../constants/colors';
 
 
 export default ScaledSheet.create({
-
     title_header: {
         fontSize: FontSizes.p,
         color: Colors.Colors.info,

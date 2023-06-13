@@ -14,13 +14,15 @@ import Ionicons from 'react-native-vector-icons/Ionicons';
 import config from '../config';
 import { countAsyncStorage } from '../utils/storage';
 import { useTranslation } from 'react-i18next';
-
+import themeContext from '../config/themeContext';
 
 const Tab = createBottomTabNavigator();
 
 export default function TabContainer() {
 
-  const {t, i18n} = useTranslation();
+  const theme = React.useContext(themeContext);
+
+  const {t} = useTranslation();
 
   const [length, setLength] = React.useState(0);
 
@@ -58,9 +60,9 @@ export default function TabContainer() {
     <Tab.Navigator
       initialRouteName={screenString.HOME}
       screenOptions={({ route }) => ({
-        tabBarStyle: styles.tabBarStyle,
-        tabBarActiveTintColor: 'white',
-        tabBarInactiveTintColor: colorString.GRAY,
+        tabBarStyle: [styles.tabBarStyle, {backgroundColor: theme.headerColor}],
+        tabBarActiveTintColor: theme.textColor,
+        tabBarInactiveTintColor: theme.textColor,
         tabBarIcon: ({ focused, color, size }) => {
           let icon;
           let label = route.name;
@@ -102,7 +104,7 @@ export default function TabContainer() {
             <View style={styles.tabContainer}>
               {icon}
               {renderBadge(focused, label, length)}
-              {focused && <Text style={styles.tabLabelText}>{label}</Text>}
+              {focused && <Text style={[styles.tabLabelText, {color: theme.textColor}]}>{label}</Text>}
             </View>
           );
         },

@@ -12,6 +12,7 @@ import FontSizes from '../../constants/colors';
 import Sizes from '../../constants/colors';
 import Colors from '../../constants/colors';
 
+
 export default styles = ScaledSheet.create({
   container: {
     flex: 1,

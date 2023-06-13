@@ -20,12 +20,14 @@ import styles from './styles';
 import NetInfo from "@react-native-community/netinfo";
 import Banner from '../../components/Banner/Banner';
 import { useTranslation } from 'react-i18next';
+import themeContext from '../../config/themeContext';
 
 export default function HomeScreen({ navigation }) {
   const [refreshing, setRefreshing] = React.useState(false);
   const [isLoading, setIsLoading] = React.useState(true);
   const {t, i18n} = useTranslation();
   const [isConnected, setIsConnected] = React.useState(false);
+  const theme = React.useContext(themeContext);
 
   useEffect(() => {
     NetInfo.addEventListener(state => {
@@ -98,24 +100,24 @@ export default function HomeScreen({ navigation }) {
         <View style={styles.viewBanner}>
           <Banner data={BannerData} />
         </View>
-        <View style={styles.menuContainer}>
+        <View style={[styles.menuContainer, {backgroundColor: theme.containerBannerColor}]}>
           {/* Bang xep hang */}
           <TouchableOpacity
             onPress={() => { navigation.navigate(screenString.COMIC_RANKING) }}>
-            <View style={[styles.menuButtonContainer, styles.menuRanking]}>
-              <View style={styles.menuImageContainer}>
+            <View style={[styles.menuButtonContainer, styles.menuRanking, {backgroundColor: theme.homeBtnBgColor1}]}>
+              <View style={[styles.menuImageContainer, {backgroundColor: theme.textColor}]}>
                 <Image
                   style={styles.menuImage}
                   source={Images.menu.ic_ranking}
                 />
               </View>
               <Text
-                style={{
+                style={[{
                   padding: 10,
                   color: 'white',
                   fontWeight: 600,
                   fontSize: 16,
-                }}>
+                }, {color: theme.blackColor}]}>
                 {t('ranking')}
               </Text>
             </View>
@@ -123,17 +125,17 @@ export default function HomeScreen({ navigation }) {
 
           {/* Phan loai */}
           <TouchableOpacity onPress={() => { }}>
-            <View style={[styles.menuButtonContainer, styles.menuPhanLoai]}>
-              <View style={styles.menuImageContainer}>
+            <View style={[styles.menuButtonContainer, styles.menuPhanLoai, {backgroundColor: theme.homeBtnBgColor2}]}>
+              <View style={[styles.menuImageContainer, {backgroundColor: theme.textColor}]}>
                 <Image style={styles.menuImage} source={Images.menu.ic_tag} />
               </View>
               <Text
-                style={{
+                style={[{
                   padding: 10,
                   color: 'white',
                   fontWeight: 600,
                   fontSize: 16,
-                }}>
+                }, {color: theme.blackColor}]}>
                 {t('category')}
               </Text>
             </View>
@@ -141,23 +143,23 @@ export default function HomeScreen({ navigation }) {
 
           {/* Cap nhat moi */}
           <TouchableOpacity onPress={() => { navigation.navigate(screenString.COMIC_NEW_UPDATE) }}>
-            <View style={[styles.menuButtonContainer, styles.menuCapNhatMoi]}>
-              <View style={styles.menuImageContainer}>
+            <View style={[styles.menuButtonContainer, styles.menuCapNhatMoi, {backgroundColor: theme.homeBtnBgColor3}]}>
+              <View style={[styles.menuImageContainer, {backgroundColor: theme.textColor}]}>
                 <Image style={styles.menuImage} source={Images.menu.ic_new} />
               </View>
               <Text
-                style={{
+                style={[{
                   padding: 10,
                   color: 'white',
                   fontWeight: 600,
                   fontSize: 16,
-                }}>
+                }, {color: theme.blackColor}]}>
                 {t('newUpdates')}
               </Text>
             </View>
           </TouchableOpacity>
         </View>
-        <View style={[styles.listManagaContainer, { backgroundColor: 'white' }]}>
+        <View style={[styles.listManagaContainer, { backgroundColor: theme.backgroundColor }]}>
           <View style={styles.listTruyenConGaiThichContainer}>
             {/* title */}
             <Text style={styles.title_truyenConGaiThich}>{t("comicNewUpdates")}</Text>
@@ -176,7 +178,7 @@ export default function HomeScreen({ navigation }) {
             </View>
           </View>
         </View>
-        <View style={[styles.listManagaContainer, { backgroundColor: 'white' }]}>
+        <View style={[styles.listManagaContainer, { backgroundColor: theme.backgroundColor }]}>
           <View style={styles.listTruyenConGaiThichContainer}>
             {/* title */}
             <Text style={styles.title_truyenConGaiThich}>HENTAI [R21/R18/R16]</Text>
@@ -195,7 +197,7 @@ export default function HomeScreen({ navigation }) {
             </View>
           </View>
         </View>
-        <View style={[styles.listManagaContainer, { backgroundColor: 'white' }]}>
+        <View style={[styles.listManagaContainer, { backgroundColor: theme.backgroundColor }]}>
           <View style={styles.listTruyenConGaiThichContainer}>
             {/* title */}
             <Text style={styles.title_truyenConGaiThich}>TỔNG HỢP DOUJINSHI</Text>

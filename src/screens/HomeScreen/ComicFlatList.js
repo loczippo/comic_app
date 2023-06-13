@@ -8,6 +8,7 @@ import SimpleLineIcons from 'react-native-vector-icons/SimpleLineIcons';
 
 import { ComicItem } from './ComicItem';
 import { useTranslation } from 'react-i18next';
+import themeContext from '../../config/themeContext';
 
 function ourTime(ourTime) {
   const {t} = useTranslation();
@@ -22,7 +23,7 @@ function ourTime(ourTime) {
 }
 
 const PlaceholderComponent = () => {
-
+  const theme = React.useContext(themeContext);
   const {t} = useTranslation()
   const opacityAnimation = useRef(new Animated.Value(0)).current;
   const startPulseAnimation = () => {
@@ -49,7 +50,7 @@ const PlaceholderComponent = () => {
   
   return (
     <>
-      <View style={styles.containerTruyen}>
+      <View style={[styles.containerTruyen, {backgroundColor: theme.backgroundColor}]}>
         {/* thumbnai */}
 
         <View style={styles.mangaContainer}>

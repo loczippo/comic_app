@@ -19,6 +19,8 @@ import screenString from '../../constants/screens';
 import images from '../../assets/images';
 import {useTranslation} from 'react-i18next';
 
+import { EventRegister } from 'react-native-event-listeners'
+
 import {Linking} from 'react-native';
 
 import styles from './styles';
@@ -31,8 +33,6 @@ import {
   getModeAsyncStorage,
 } from '../../utils/storage';
 import config from '../../config';
-import {useDispatch} from 'react-redux';
-import {setMode} from '../../redux/modeSlice';
 
 export default function SettingScreen({navigation}) {
   const selectRef = React.useRef(null);
@@ -78,16 +78,14 @@ export default function SettingScreen({navigation}) {
 
   const [isEnabledDarkMode, setIsEnabledDarkMode] = React.useState(false);
 
-  const dispatch = useDispatch();
-
   React.useEffect(() => {
     getModeAsyncStorage(config.MODE_STORAGE).then(mode => {
       if (mode === 'dark') {
         setIsEnabledDarkMode(true);
-        dispatch(setMode('dark'));
+        // dispatch(setMode('dark'));
       } else {
         setIsEnabledDarkMode(false);
-        dispatch(setMode('light'));
+        // dispatch(setMode('light'));
       }
     });
   }, []);
@@ -98,6 +96,7 @@ export default function SettingScreen({navigation}) {
 
     const mode = !isEnabledDarkMode ? 'dark' : 'light';
     addModeAsyncStorage(config.MODE_STORAGE, mode);
+    EventRegister.emit(config.MODE_STORAGE, mode)
   };
 
   const toggleAdsSwitch = () => {

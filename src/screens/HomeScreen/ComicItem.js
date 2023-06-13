@@ -7,6 +7,7 @@ import FastImage from 'react-native-fast-image';
 import images from '../../assets/images';
 import GlobalTag from '../../components/Tag/Tag';
 import { useTranslation } from 'react-i18next';
+import themeContext from '../../config/themeContext';
 
 function ourTime(ourTime) {
   const {t} = useTranslation();
@@ -22,6 +23,7 @@ function ourTime(ourTime) {
 
 export const ComicItem = ({ item, direction, navigation, isLoading }) => {
   const { t, i18n } = useTranslation();
+  const theme = React.useContext(themeContext);
 
   const opacityAnimation = useRef(new Animated.Value(0)).current;
   const startPulseAnimation = () => {
@@ -57,7 +59,7 @@ export const ComicItem = ({ item, direction, navigation, isLoading }) => {
             id: item._id,
           });
         }}>
-        <View style={styles.containerHorizontal}>
+        <View style={[styles.containerHorizontal, {backgroundColor: theme.backgroundColor}]}>
           {/* thumbnai */}
 
           <View style={{ flex: 1 }}>
@@ -82,7 +84,7 @@ export const ComicItem = ({ item, direction, navigation, isLoading }) => {
           <View style={styles.comicInfoHorizontal}>
             {/* name */}
             <Text
-              style={[styles.manga_name, { marginLeft: 40 }]}
+              style={[styles.manga_name, { marginLeft: 40 }, {color: theme.darkColor}]}
               numberOfLines={2}
               ellipsizeMode="tail">
               {item.name}
@@ -112,7 +114,7 @@ export const ComicItem = ({ item, direction, navigation, isLoading }) => {
             id: item._id,
           });
         }}>
-        <View style={styles.containerTruyen}>
+        <View style={[styles.containerTruyen, {backgroundColor: theme.backgroundColor}]}>
           {/* thumbnai */}
 
           <View style={styles.mangaContainer}>
@@ -162,7 +164,7 @@ export const ComicItem = ({ item, direction, navigation, isLoading }) => {
 
           {/* name */}
           <Text
-            style={styles.manga_name}
+            style={[styles.manga_name, {color: theme.darkColor}]}
             numberOfLines={1}
             ellipsizeMode="tail">
             {item.name}

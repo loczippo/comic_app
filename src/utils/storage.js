@@ -138,10 +138,11 @@ export const getModeAsyncStorage = async (key, defautMode = null) => {
   try {
     const currentMode = await AsyncStorage.getItem(key);
     if(currentMode != null) {
+      console.log(`${currentMode} mode selected`)
       return currentMode;
     }
     else {
-      console.log(`${currentMode} mode selected`)
+      console.log(`default ${defautMode} mode selected`)
       await AsyncStorage.setItem(key, defautMode);
       return defautMode;
     }

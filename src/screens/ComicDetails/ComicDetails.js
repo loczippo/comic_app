@@ -28,8 +28,6 @@ import {
   countAsyncStorage,
 } from '../../utils/storage';
 import config from '../../config';
-import {useDispatch, useSelector} from 'react-redux';
-import {setStorageCount} from '../../redux/storageSlice';
 import {useTranslation} from 'react-i18next';
 
 function handleWatingName(name) {
@@ -46,8 +44,6 @@ function handleWatingName(name) {
 
 export default function ComicDetails({route, navigation}) {
   const {t} = useTranslation();
-
-  const dispatch = useDispatch();
 
   const {name, id} = route.params;
 
@@ -121,9 +117,6 @@ export default function ComicDetails({route, navigation}) {
     } else {
       removeComicFromAsyncStorageArray(config.COMIC_STORAGE, {_id: id});
     }
-    countAsyncStorage(config.COMIC_STORAGE).then(result => {
-      dispatch(setStorageCount(result));
-    });
     setIsFollowing(previousState => !previousState);
   };
 
